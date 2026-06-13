@@ -61,14 +61,22 @@
       <div class="section-header">
         <span class="section-tag">Showcase</span>
         <h2 class="section-title">Proyectos Activos de la Comunidad</h2>
+      <!-- BARRA DE FILTROS POR CATEGORÍA -->
+      <div class="filter-bar">
+        <button class="filter-btn active" onclick="filterProjects('all')">Todos</button>
+        <button class="filter-btn" onclick="filterProjects('mundo-rural')">Mundo Rural</button>
+        <button class="filter-btn" onclick="filterProjects('vivienda')">Vivienda</button>
+        <button class="filter-btn" onclick="filterProjects('salud')">Salud</button>
+        <button class="filter-btn" onclick="filterProjects('educacion')">Educación</button>
+        <button class="filter-btn" onclick="filterProjects('economia')">Economía</button>
       </div>
 
       <div class="projects-grid">
         
         <!-- PROYECTO 1: AGRICULTURA RESILIENTE IA -->
-        <article class="project-card">
+        <article class="project-card filter-item cat-mundo-rural cat-economia">
           <div class="card-header-img" style="background-image: url('https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=800&q=80');">
-            <span class="card-badge badge-featured">Proyecto Insignia</span>
+            <span class="card-badge badge-active">Activo</span>
           </div>
           <div class="card-content">
             <h3 class="card-title">Agricultura Resiliente IA</h3>
@@ -94,9 +102,9 @@
         </article>
 
         <!-- PROYECTO 2: VENDING-BAR -->
-        <article class="project-card">
+        <article class="project-card filter-item cat-economia">
           <div class="card-header-img" style="background-image: url('https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=800&q=80');">
-            <span class="card-badge badge-dev">En Desarrollo</span>
+            <span class="card-badge badge-active">Activo</span>
           </div>
           <div class="card-content">
             <h3 class="card-title">Vending-Bar</h3>
@@ -110,9 +118,9 @@
               <span class="tech-tag">Infraestructura</span>
             </div>
             <div class="card-footer">
-              <span class="card-btn card-btn-secondary" style="cursor: not-allowed; opacity: 0.5;">
-                Próximamente
-              </span>
+              <a href="vending-bar/" class="card-btn card-btn-primary">
+                Ver Demo <i class="fas fa-arrow-right"></i>
+              </a>
               <a href="https://github.com/domoprac/Vending-Bar" target="_blank" class="card-btn card-btn-secondary">
                 <i class="fab fa-github"></i> Repositorio
               </a>
@@ -121,9 +129,9 @@
         </article>
 
         <!-- PROYECTO 3: VIVIENDA PUEBLO DINÁMICA -->
-        <article class="project-card">
+        <article class="project-card filter-item cat-mundo-rural cat-vivienda">
           <div class="card-header-img" style="background-image: url('https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=800&q=80');">
-            <span class="card-badge badge-dev">Activo</span>
+            <span class="card-badge badge-active">Activo</span>
           </div>
           <div class="card-content">
             <h3 class="card-title">Vivienda Pueblo Dinámica</h3>
@@ -147,37 +155,10 @@
           </div>
         </article>
 
-        <!-- PROYECTO 4: SANTACARA PRESUPUESTOS -->
-        <article class="project-card">
-          <div class="card-header-img" style="background-image: url('https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&q=80');">
-            <span class="card-badge badge-dev">Activo</span>
-          </div>
-          <div class="card-content">
-            <h3 class="card-title">Santacara Presupuestos</h3>
-            <p class="card-description">
-              Herramienta de Rehabilitación Sostenible enfocada en la Casa del Médico de Santacara. Permite realizar presupuestos y análisis económicos de obra pública de forma eficiente.
-            </p>
-            <div class="card-tech-stack">
-              <span class="tech-tag">Python</span>
-              <span class="tech-tag">Presupuestos</span>
-              <span class="tech-tag">Rehabilitación</span>
-              <span class="tech-tag">Sostenibilidad</span>
-            </div>
-            <div class="card-footer">
-              <span class="card-btn card-btn-secondary" style="cursor: not-allowed; opacity: 0.5;">
-                Próximamente
-              </span>
-              <a href="https://github.com/domoprac/santacara-presupuestos" target="_blank" class="card-btn card-btn-secondary">
-                <i class="fab fa-github"></i> Repositorio
-              </a>
-            </div>
-          </div>
-        </article>
-
-        <!-- PROYECTO 5: MAPA DE CALIDAD DE VIDA -->
-        <article class="project-card">
+        <!-- PROYECTO 4: MAPA DE CALIDAD DE VIDA -->
+        <article class="project-card filter-item cat-mundo-rural cat-salud cat-educacion">
           <div class="card-header-img" style="background-image: url('https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=800&q=80');">
-            <span class="card-badge badge-dev">Activo</span>
+            <span class="card-badge badge-active">Activo</span>
           </div>
           <div class="card-content">
             <h3 class="card-title">Mapa de Calidad de Vida</h3>
@@ -201,6 +182,51 @@
           </div>
         </article>
 
+        <!-- EJEMPLO EN CONSTRUCCIÓN (AMARILLO) -->
+        <article class="project-card filter-item cat-vivienda cat-economia">
+          <div class="card-header-img" style="background-image: url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=800&q=80');">
+            <span class="card-badge badge-wip">En Construcción</span>
+          </div>
+          <div class="card-content">
+            <h3 class="card-title">Simulador de Rehabilitación</h3>
+            <p class="card-description">
+              Herramienta de cálculo financiero para la optimización de costes y amortización de obras de acondicionamiento de vivienda rústica subvencionada.
+            </p>
+            <div class="card-tech-stack">
+              <span class="tech-tag">JavaScript</span>
+              <span class="tech-tag">CSS Grid</span>
+              <span class="tech-tag">Presupuestos</span>
+            </div>
+            <div class="card-footer">
+              <span class="card-btn card-btn-secondary" style="cursor: not-allowed; opacity: 0.5; width: 100%;">
+                Boceto en desarrollo
+              </span>
+            </div>
+          </div>
+        </article>
+
+        <!-- EJEMPLO SIN LANDING WEB (ROJO) -->
+        <article class="project-card filter-item cat-salud cat-educacion">
+          <div class="card-header-img" style="background-image: url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80');">
+            <span class="card-badge badge-no-landing">Sin landing web</span>
+          </div>
+          <div class="card-content">
+            <h3 class="card-title">Gestor Escolar Rural</h3>
+            <p class="card-description">
+              Propuesta de sistema unificado para coordinar rutas de transporte escolar bajo demanda y monitorización de servicios extraescolares en zonas de baja densidad.
+            </p>
+            <div class="card-tech-stack">
+              <span class="tech-tag">Propuesta</span>
+              <span class="tech-tag">Educación</span>
+            </div>
+            <div class="card-footer">
+              <a href="docs/contribucion.html" target="_blank" class="card-btn card-btn-secondary" style="width: 100%;">
+                <i class="fas fa-plus"></i> Sube tu landing
+              </a>
+            </div>
+          </div>
+        </article>
+
       </div>
     </div>
   </main>
@@ -211,7 +237,7 @@
       <div class="cta-box">
         <h2 class="cta-title">¿Eres miembro de la Comunidad CPS?</h2>
         <p class="cta-text">
-          Sube la landing page de tu proyecto tecnológico y añádela al escaparate de CPS Proyectos. Sigue nuestro estándar técnico y abre un Pull Request hoy mismo.
+          Sube la landing page de tu proyecto tecnológico y contribuye con la Comunidad CPS. Sigue nuestro estándar técnico y abre un Pull Request hoy mismo.
         </p>
         <a href="docs/contribucion.html" target="_blank" class="btn btn-primary">
           <i class="fas fa-book"></i> Leer Guía de Contribución
@@ -232,12 +258,12 @@
         <a href="https://github.com/domoprac" target="_blank">Organización GitHub</a>
       </div>
       <div class="footer-copyright">
-        &copy; 2026 CPS Proyectos. Todos los derechos reservados. Desarrollado por la Comunidad CPS y la organización domoprac.
+        &copy; 2026 CPS Proyectos. Todos los derechos reservados. Un proyecto de la Comunidad CPS y la organización domoprac.
       </div>
     </div>
   </footer>
 
-  <!-- Script para cambiar el estilo del nav al hacer scroll -->
+  <!-- Script para cambiar el estilo del nav al hacer scroll y filtrado de categorías -->
   <script>
     window.addEventListener('scroll', () => {
       const nav = document.querySelector('nav');
@@ -247,6 +273,30 @@
         nav.classList.remove('scrolled');
       }
     });
+
+    function filterProjects(category) {
+      // Actualizar botón activo
+      const buttons = document.querySelectorAll('.filter-btn');
+      buttons.forEach(btn => btn.classList.remove('active'));
+      
+      if (window.event && window.event.target) {
+        window.event.target.classList.add('active');
+      }
+
+      // Filtrar tarjetas
+      const cards = document.querySelectorAll('.filter-item');
+      cards.forEach(card => {
+        if (category === 'all') {
+          card.style.display = 'flex';
+        } else {
+          if (card.classList.contains('cat-' + category)) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        }
+      });
+    }
   </script>
 </body>
 </html>
