@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mapa de Calidad de Vida en España — Herramienta de Decisión Residencial Rural</title>
+  <meta name="description" content="Proyecto de código abierto para calcular y visualizar el índice real de calidad de vida por municipio en España, basado en tiempos por carretera reales, conectividad y costes.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    /* VARIABLES DE MARCA: MAPS-DASHBOARD (INDIGO + CIAN + OSCURO) */
+    :root {
+      --bg-dark:       #080a11; /* Azul noche profundo */
+      --bg-card:       #101424; /* Fondo de tarjeta indigo oscuro */
+      --primary:       #4f46e5; /* Indigo */
+      --primary-light: #06b6d4; /* Cian eléctrico */
+      --primary-glow:  rgba(6, 182, 212, 0.12);
+      --mint:          #10b981; /* Verde menta para calidad de vida */
+      --gold:          #c69c59; /* Dorado */
+      --cream:         #fcfaf6;
+      --text-light:    #e0e7ff; /* Texto azulado claro */
+      --text-muted:    #818cf8; /* Texto indigo apagado */
+      --border-dark:   rgba(6, 182, 212, 0.15); /* Borde cian sutil */
+      --transition:    all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      --shadow-glow:   0 8px 32px rgba(6, 182, 212, 0.2);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, .font-serif {
+      font-family: 'Playfair Display', serif;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* NAVEGACIÓN */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(8, 10, 17, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-dark);
+      height: 80px;
+      display: flex;
+      align-items: center;
+      transition: var(--transition);
+    }
+
+    .nav-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--cream);
+      text-decoration: none;
+    }
+
+    .brand span {
+      color: var(--primary-light);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+
+    .nav-links a:hover {
+      color: var(--primary-light);
+    }
+
+    .nav-cta {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      color: var(--cream) !important;
+      padding: 10px 24px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      box-shadow: 0 4px 20px rgba(6, 182, 212, 0.4);
+      border: 1px solid rgba(6, 182, 212, 0.25);
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(6, 182, 212, 0.6);
+    }
+
+    /* HERO SECTION */
+    .hero {
+      position: relative;
+      min-height: 95vh;
+      display: flex;
+      align-items: center;
+      padding-top: 140px;
+      padding-bottom: 80px;
+      background: 
+        linear-gradient(180deg, rgba(8, 10, 17, 0.9) 0%, var(--bg-dark) 100%),
+        url('https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+      text-align: center;
+    }
+
+    .hero-glow {
+      position: absolute;
+      top: 35%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 950px;
+      margin: 0 auto;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(6, 182, 212, 0.08);
+      border: 1px solid var(--border-dark);
+      padding: 8px 18px;
+      border-radius: 50px;
+      color: var(--primary-light);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+
+    .hero-badge span {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: var(--primary-light);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--primary-light);
+    }
+
+    .hero-title {
+      font-size: 3.5rem;
+      line-height: 1.15;
+      color: var(--cream);
+      margin-bottom: 24px;
+    }
+
+    .hero-title span {
+      background: linear-gradient(135deg, #e0e7ff 30%, var(--primary-light) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 1.25rem;
+      color: var(--text-muted);
+      max-width: 750px;
+      margin: 0 auto 40px auto;
+      font-weight: 300;
+      line-height: 1.6;
+    }
+
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 60px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 32px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      color: var(--cream);
+      border: 1px solid rgba(6, 182, 212, 0.25);
+      box-shadow: 0 4px 20px rgba(6, 182, 212, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(6, 182, 212, 0.5);
+      border-color: var(--primary-light);
+    }
+
+    .btn-secondary {
+      background: rgba(6, 182, 212, 0.05);
+      color: var(--primary-light);
+      border: 1px solid var(--border-dark);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(6, 182, 212, 0.12);
+      transform: translateY(-2px);
+      border-color: var(--primary-light);
+    }
+
+    /* MOCKUP INTERACTIVO SINTÉTICO (MAPA) */
+    .hero-map-mockup {
+      background: #0d1120;
+      border: 1px solid var(--border-dark);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow-glow);
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      height: 420px;
+      text-align: left;
+      position: relative;
+    }
+
+    .mockup-sidebar {
+      background: #11162d;
+      border-right: 1px solid var(--border-dark);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      z-index: 2;
+    }
+
+    .sidebar-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      color: var(--cream);
+      margin-bottom: 12px;
+      border-bottom: 1px solid rgba(6, 182, 212, 0.15);
+      padding-bottom: 8px;
+    }
+
+    .sidebar-stat {
+      background: rgba(8, 10, 17, 0.5);
+      border: 1px solid rgba(6, 182, 212, 0.1);
+      padding: 12px;
+      border-radius: 8px;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .stat-value {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--cream);
+      display: flex;
+      justify-content: space-between;
+      margin-top: 4px;
+    }
+
+    .stat-value span.badge {
+      font-size: 0.75rem;
+      background: rgba(16, 185, 129, 0.2);
+      color: #34d399;
+      border: 1px solid #10b981;
+      padding: 2px 8px;
+      border-radius: 50px;
+    }
+
+    .mockup-map-area {
+      background: radial-gradient(circle at center, rgba(16, 185, 129, 0.08) 0%, transparent 60%), #070912;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* Gráfico sintético de red de carreteras del mapa */
+    .map-svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.35;
+      stroke: var(--primary-light);
+    }
+
+    .map-pointer {
+      position: absolute;
+      top: 45%;
+      left: 55%;
+      z-index: 3;
+      cursor: pointer;
+    }
+
+    .pointer-dot {
+      width: 14px;
+      height: 14px;
+      background: var(--primary-light);
+      border-radius: 50%;
+      border: 2px solid var(--cream);
+      box-shadow: 0 0 12px var(--primary-light);
+      position: relative;
+      animation: pulse-glow 2s infinite;
+    }
+
+    @keyframes pulse-glow {
+      0% {
+        box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.7);
+      }
+      70% {
+        box-shadow: 0 0 0 10px rgba(6, 182, 212, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(6, 182, 212, 0);
+      }
+    }
+
+    .pointer-card {
+      position: absolute;
+      bottom: 25px;
+      left: -90px;
+      background: #11162d;
+      border: 1px solid var(--primary-light);
+      border-radius: 8px;
+      padding: 12px 16px;
+      width: 200px;
+      font-size: 0.8rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      z-index: 4;
+    }
+
+    /* 3. VARIABLES DE EVALUACIÓN (PESOS) */
+    .weights-section {
+      padding: 100px 0;
+      background: var(--bg-card);
+      border-top: 1px solid var(--border-dark);
+      border-bottom: 1px solid var(--border-dark);
+    }
+
+    .weights-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .weights-list {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .weight-row {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .weight-header {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .weight-pct {
+      color: var(--primary-light);
+    }
+
+    .weight-bar-bg {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .weight-bar-fill {
+      height: 100%;
+      border-radius: 10px;
+    }
+
+    .fill-servicios { width: 35%; background: var(--primary-light); }
+    .fill-conectividad { width: 28%; background: var(--primary); }
+    .fill-naturaleza { width: 20%; background: var(--mint); }
+    .fill-coste { width: 17%; background: var(--gold); }
+
+    .weight-description {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* 4. PIPELINE TÉCNICO */
+    .pipeline-section {
+      padding: 100px 0;
+    }
+
+    .pipeline-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      margin-top: 50px;
+    }
+
+    .pipe-card {
+      background: #0d1120;
+      border: 1px solid rgba(6, 182, 212, 0.08);
+      border-radius: 16px;
+      padding: 30px;
+      position: relative;
+      transition: var(--transition);
+    }
+
+    .pipe-card:hover {
+      border-color: var(--primary-light);
+      transform: translateY(-4px);
+      box-shadow: 0 4px 20px rgba(6, 182, 212, 0.1);
+    }
+
+    .pipe-number {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 2.5rem;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      color: rgba(6, 182, 212, 0.08);
+      line-height: 1;
+    }
+
+    .pipe-title {
+      font-size: 1.15rem;
+      color: var(--cream);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .pipe-title i {
+      color: var(--primary-light);
+    }
+
+    .pipe-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      font-weight: 300;
+    }
+
+    /* 5. ROADMAP */
+    .roadmap-section {
+      padding: 100px 0;
+      background: #05060b;
+      border-top: 1px solid var(--border-dark);
+      border-bottom: 1px solid var(--border-dark);
+    }
+
+    .roadmap-timeline {
+      max-width: 800px;
+      margin: 50px auto 0 auto;
+      position: relative;
+      padding-left: 30px;
+      border-left: 2px solid rgba(6, 182, 212, 0.15);
+    }
+
+    .roadmap-item {
+      position: relative;
+      margin-bottom: 40px;
+    }
+
+    .roadmap-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .roadmap-dot {
+      position: absolute;
+      left: -41px;
+      top: 4px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 3px solid var(--bg-dark);
+    }
+
+    .dot-check {
+      background: var(--mint);
+      box-shadow: 0 0 8px var(--mint);
+    }
+
+    .dot-progress {
+      background: var(--primary-light);
+      box-shadow: 0 0 8px var(--primary-light);
+    }
+
+    .dot-todo {
+      background: #334155;
+    }
+
+    .roadmap-title {
+      font-size: 1.1rem;
+      color: var(--cream);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .roadmap-title span.status-badge {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .status-done { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+    .status-wip { background: rgba(6, 182, 212, 0.15); color: #22d3ee; }
+    .status-future { background: rgba(51, 65, 85, 0.3); color: #94a3b8; }
+
+    .roadmap-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      font-weight: 300;
+    }
+
+    /* 6. CALL TO ACTION: CONTRIBUIR */
+    .cta-section {
+      padding: 80px 0;
+      background: linear-gradient(180deg, var(--bg-dark) 0%, #030407 100%);
+    }
+
+    .cta-box {
+      background: radial-gradient(circle at top right, rgba(6, 182, 212, 0.1), transparent), var(--bg-card);
+      border: 1px solid var(--border-dark);
+      border-radius: 24px;
+      padding: 60px 40px;
+      text-align: center;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .cta-title {
+      font-size: 2.2rem;
+      color: var(--cream);
+      margin-bottom: 16px;
+    }
+
+    .cta-text {
+      color: var(--text-muted);
+      max-width: 650px;
+      margin: 0 auto 32px auto;
+      font-size: 1rem;
+      font-weight: 300;
+    }
+
+    /* FOOTER */
+    footer {
+      background: #030406;
+      border-top: 1px solid rgba(6, 182, 212, 0.1);
+      padding: 40px 0;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--cream);
+    }
+
+    .footer-logo span {
+      color: var(--primary-light);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .footer-links a:hover {
+      color: var(--primary-light);
+    }
+
+    .footer-copyright {
+      width: 100%;
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 24px;
+      margin-top: 16px;
+      color: rgba(129, 140, 248, 0.3);
+    }
+
+    /* RESPONSIVIDAD */
+    @media (max-width: 992px) {
+      .weights-grid {
+        grid-template-columns: 1fr;
+        gap: 50px;
+      }
+      .hero-map-mockup {
+        grid-template-columns: 1fr;
+        height: auto;
+      }
+      .mockup-sidebar {
+        border-right: none;
+        border-bottom: 1px solid var(--border-dark);
+      }
+      .mockup-map-area {
+        height: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVEGACIÓN -->
+  <nav>
+    <div class="container nav-inner">
+      <a href="../" class="brand">
+        CPS<span>Proyectos</span>
+      </a>
+      <div class="nav-links">
+        <a href="#concepto">Variables</a>
+        <a href="#pipeline">¿Cómo Funciona?</a>
+        <a href="#roadmap">Hoja de Ruta</a>
+        <a href="../" class="nav-btn-back nav-cta">
+          <i class="fas fa-arrow-left"></i> Volver al Showcase
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <header class="hero">
+    <div class="hero-glow"></div>
+    <div class="container hero-content">
+      <div class="hero-badge">
+        <span></span> Proyecto Open Source · En Construcción
+      </div>
+      <h1 class="hero-title">
+        Calidad de Vida Real en España, <span>Municipio a Municipio</span>
+      </h1>
+      <p class="hero-subtitle">
+        Visualización geográfica interactiva para analizar el acceso a servicios básicos, conectividad digital, dotación de ocio y costes reales del suelo por carretera mediante enrutado de POIs reales.
+      </p>
+      
+      <div class="hero-actions">
+        <a href="#concepto" class="btn btn-primary">Ver Índice Ponderado</a>
+        <a href="https://github.com/domoprac/mapa-calidad-vida" target="_blank" class="btn btn-secondary">
+          <i class="fab fa-github"></i> Código en GitHub
+        </a>
+      </div>
+
+      <!-- MOCKUP INTERACTIVO DEL MAPA -->
+      <div class="hero-map-mockup">
+        
+        <!-- Sidebar lateral de datos del mapa -->
+        <div class="mockup-sidebar">
+          <div class="sidebar-title">Detalle Municipal</div>
+          <div class="sidebar-stat">
+            <div class="stat-label">Municipio Seleccionado</div>
+            <div class="stat-value">Santacara (Navarra)</div>
+          </div>
+          <div class="sidebar-stat">
+            <div class="stat-label">Población</div>
+            <div class="stat-value">870 hab.</div>
+          </div>
+          <div class="sidebar-stat">
+            <div class="stat-label">Calidad de Vida Global</div>
+            <div class="stat-value">0.72 / 1.00 <span class="badge">Alto</span></div>
+          </div>
+        </div>
+
+        <!-- Área del mapa con líneas de enrutamiento y POIs -->
+        <div class="mockup-map-area">
+          <svg class="map-svg" viewBox="0 0 800 400">
+            <!-- Líneas de carreteras ficticias simulan vector tile -->
+            <path d="M 50,50 Q 150,180 300,100 T 550,250 T 750,50" fill="none" stroke-width="1.5"/>
+            <path d="M 100,350 Q 250,200 450,300 T 700,200" fill="none" stroke-width="1"/>
+            <path d="M 350,20 Q 400,150 480,380" fill="none" stroke-width="0.8"/>
+            <circle cx="440" cy="180" r="45" fill="rgba(6, 182, 212, 0.05)" stroke="var(--primary-light)" stroke-dasharray="4"/>
+          </svg>
+
+          <!-- Marcador interactivo flotante en Santacara -->
+          <div class="map-pointer">
+            <div class="pointer-dot"></div>
+            <div class="pointer-card">
+              <div style="font-weight: 600; color: var(--cream); margin-bottom: 6px;">📍 Núcleo: Santacara</div>
+              <div style="color: var(--text-light); margin-bottom: 4px;">🏥 Hospital: <strong>48 min</strong> (OSRM)</div>
+              <div style="color: var(--text-light); margin-bottom: 4px;">📡 Conexión: <strong>1000 Mbps Fibra</strong></div>
+              <div style="color: var(--mint);">🟢 Ocio Local: Alto (0.8)</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </header>
+
+  <!-- CONCEPTO CLAVE / PONDERACIONES -->
+  <section id="concepto" class="weights-section">
+    <div class="container weights-grid">
+      <div>
+        <span class="section-tag">El Algoritmo</span>
+        <h2 class="section-title" style="margin-bottom: 24px;">Índice Ponderado de Calidad de Vida</h2>
+        <p style="font-size: 1.05rem; margin-bottom: 20px; font-weight: 300;">
+          Para evaluar objetivamente si una zona rural o municipio es atractivo residencialmente, calculamos una métrica ponderada dividida en cuatro pilares críticos.
+        </p>
+        <p style="color: var(--text-muted); font-size: 0.95rem; font-weight: 300; margin-bottom: 30px;">
+          A diferencia de otros mapas estáticos, este modelo prioriza los **tiempos de desplazamiento por carretera reales** calculados mediante motores de rutas locales (OSRM), y no la simple distancia en línea recta al servicio.
+        </p>
+      </div>
+
+      <!-- Barras de pesos interactivos -->
+      <div class="weights-list">
+        
+        <!-- Servicios -->
+        <div class="weight-row">
+          <div class="weight-header">
+            <span>🏥 Servicios esenciales</span>
+            <span class="weight-pct">35%</span>
+          </div>
+          <div class="weight-bar-bg">
+            <div class="weight-bar-fill fill-servicios"></div>
+          </div>
+          <div class="weight-description">Hospital con urgencias 24h, centro de salud de zona y centros educativos (IES / FP).</div>
+        </div>
+
+        <!-- Conectividad -->
+        <div class="weight-row">
+          <div class="weight-header">
+            <span>📡 Conectividad y Energía</span>
+            <span class="weight-pct">28%</span>
+          </div>
+          <div class="weight-bar-bg">
+            <div class="weight-bar-fill fill-conectividad"></div>
+          </div>
+          <div class="weight-description">Mbps reales de fibra óptica, cobertura móvil (4G/5G) y potencial solar para autoconsumo.</div>
+        </div>
+
+        <!-- Naturaleza/Ocio -->
+        <div class="weight-row">
+          <div class="weight-header">
+            <span>🌲 Ocio, Deporte y Naturaleza</span>
+            <span class="weight-pct">20%</span>
+          </div>
+          <div class="weight-bar-bg">
+            <div class="weight-bar-fill fill-naturaleza"></div>
+          </div>
+          <div class="weight-description">Instalaciones deportivas, piscinas, gimnasios, zonas de senderismo/BTT y ocio social (hostelería local).</div>
+        </div>
+
+        <!-- Costes -->
+        <div class="weight-row">
+          <div class="weight-header">
+            <span>🪙 Coste de Vida Relativo</span>
+            <span class="weight-pct">17%</span>
+          </div>
+          <div class="weight-bar-bg">
+            <div class="weight-bar-fill fill-coste"></div>
+          </div>
+          <div class="weight-description">Precio medio de venta/alquiler (€/m²), impuestos locales, costes básicos y aparcamiento gratuito.</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- PIPELINE TÉCNICO -->
+  <section id="pipeline" class="pipeline-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Backend Pipeline</span>
+        <h2 class="section-title">¿Cómo procesamos la información?</h2>
+      </div>
+
+      <div class="pipeline-grid">
+        
+        <!-- Paso 1 -->
+        <div class="pipe-card">
+          <div class="pipe-number">01</div>
+          <h3 class="pipe-title"><i class="fas fa-border-all"></i> CNIG & INE</h3>
+          <p class="pipe-desc">Cargamos los límites oficiales de los más de 8.000 municipios de España y los cruzamos con los últimos censos de población del INE.</p>
+        </div>
+
+        <!-- Paso 2 -->
+        <div class="pipe-card">
+          <div class="pipe-number">02</div>
+          <h3 class="pipe-title"><i class="fas fa-map-marked-alt"></i> Extracción POI</h3>
+          <p class="pipe-desc">Filtramos y extraemos mediante OpenStreetMap todos los puntos de interés clave: hospitales, farmacias, IES, piscinas y zonas de ocio.</p>
+        </div>
+
+        <!-- Paso 3 -->
+        <div class="pipe-card">
+          <div class="pipe-number">03</div>
+          <h3 class="pipe-title"><i class="fas fa-route"></i> OSRM Routing</h3>
+          <p class="pipe-desc">El motor de enrutamiento OSRM calcula el trayecto más rápido en coche por carretera entre el centro del municipio y el POI más cercano.</p>
+        </div>
+
+        <!-- Paso 4 -->
+        <div class="pipe-card">
+          <div class="pipe-number">04</div>
+          <h3 class="pipe-title"><i class="fas fa-layer-group"></i> Vector Tiles</h3>
+          <p class="pipe-desc">Normalizamos las métricas e indexamos los polígonos usando Tippecanoe para generar tiles vectoriales ligeros (PMTiles) servidos en MapLibre GL.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ROADMAP -->
+  <section id="roadmap" class="roadmap-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Hoja de Ruta</span>
+        <h2 class="section-title">Fases de Desarrollo del Repositorio</h2>
+      </div>
+
+      <div class="roadmap-timeline">
+        
+        <div class="roadmap-item">
+          <div class="roadmap-dot dot-check"></div>
+          <h4 class="roadmap-title">Fase 1: MVP Navarra <span class="status-badge status-done">Completado</span></h4>
+          <p class="roadmap-desc">Recopilación de POIs de sanidad, educación y conectividad para Navarra. Pipeline Python básico funcional.</p>
+        </div>
+
+        <div class="roadmap-item">
+          <div class="roadmap-dot dot-progress"></div>
+          <h4 class="roadmap-title">Fase 2: Mapa Web Inicial <span class="status-badge status-wip">En Progreso</span></h4>
+          <p class="roadmap-desc">Integración del mapa interactivo con MapLibre GL JS y renderizado inicial de capas con popup municipal.</p>
+        </div>
+
+        <div class="roadmap-item">
+          <div class="roadmap-dot dot-todo"></div>
+          <h4 class="roadmap-title">Fase 3: Escalado Nacional <span class="status-badge status-future">Planificado</span></h4>
+          <p class="roadmap-desc">Carga masiva de datos cartográficos de toda España. Optimización del pipeline mediante procesamiento paralelo.</p>
+        </div>
+
+        <div class="roadmap-item">
+          <div class="roadmap-dot dot-todo"></div>
+          <h4 class="roadmap-title">Fase 4: Ponderador Personalizado <span class="status-badge status-future">Planificado</span></h4>
+          <p class="roadmap-desc">Habilitar deslizadores en la interfaz web para que el usuario defina la importancia de la conectividad, sanidad o coste en función de su perfil personal.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SECCIÓN CTA: CONTRIBUIR -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-box">
+        <h2 class="cta-title">¿Eres analista GIS, desarrollador o vecino?</h2>
+        <p class="cta-text">
+          Este proyecto es 100% de código abierto. Si deseas contribuir optimizando el pipeline de Python, refinando el frontend en JS o aportando datos locales para la validación, ¡únete a nuestro repositorio de la organización domoprac!
+        </p>
+        <a href="https://github.com/domoprac/mapa-calidad-vida" target="_blank" class="btn btn-primary">
+          <i class="fab fa-github"></i> Colaborar en GitHub
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container footer-inner">
+      <div class="footer-logo">
+        CPS<span>Proyectos</span>
+      </div>
+      <div class="footer-links">
+        <a href="#concepto">Variables</a>
+        <a href="#pipeline">Estructura</a>
+        <a href="https://github.com/domoprac/mapa-calidad-vida" target="_blank">Repositorio GitHub</a>
+      </div>
+      <div class="footer-copyright">
+        &copy; 2026 CPS Proyectos. Desarrollado por la Comunidad CPS y la organización domoprac. Mapas y routing sobre datos CNIG, INE y OpenStreetMap.
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
