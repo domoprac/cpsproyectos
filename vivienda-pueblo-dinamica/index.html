@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vivienda, Pueblo y Dinámica — Modelo CPS contra la Despoblación Rural</title>
+  <meta name="description" content="Aplicación de la metodología Creative Problem Solving (CPS) para reactivar activos de vivienda municipal en Santacara (Navarra). Modelo replicable de retorno demográfico.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    /* VARIABLES DE MARCA: ECO-DARK PREMIUM */
+    :root {
+      --bg-dark:       #060c0a; /* Verde bosque casi negro */
+      --bg-card:       #0e1713; /* Fondo de tarjeta verde pino oscuro */
+      --forest:        #1b4332; /* Verde pino principal */
+      --forest-light:  #2d6a4f; /* Verde esmeralda suave */
+      --forest-glow:   rgba(45, 106, 79, 0.12);
+      --ochre:         #d4a373; /* Ochre cálido/dorado rústico */
+      --ochre-dark:    #a77c50; /* Dorado tierra */
+      --ochre-light:   #e9c46a; /* Amarillo sol suave */
+      --cream:         #fcfaf6;
+      --text-light:    #f2ede4; /* Blanco roto cálido */
+      --text-muted:    #a2b0a9; /* Gris oliva apagado */
+      --border-dark:   rgba(212, 163, 115, 0.15); /* Borde ocre sutil */
+      --transition:    all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      --shadow-glow:   0 8px 32px rgba(27, 67, 50, 0.25);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, .font-serif {
+      font-family: 'Playfair Display', serif;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* 1. NAVEGACIÓN STICKY */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(6, 12, 10, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-dark);
+      height: 80px;
+      display: flex;
+      align-items: center;
+      transition: var(--transition);
+    }
+
+    .nav-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--cream);
+      text-decoration: none;
+    }
+
+    .brand span {
+      color: var(--ochre);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+
+    .nav-links a:hover {
+      color: var(--ochre);
+    }
+
+    .nav-cta {
+      background: linear-gradient(135deg, var(--forest) 0%, var(--forest-light) 100%);
+      color: var(--cream) !important;
+      padding: 10px 24px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      box-shadow: 0 4px 20px rgba(27, 67, 50, 0.4);
+      border: 1px solid rgba(212, 163, 115, 0.25);
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(45, 106, 79, 0.6);
+    }
+
+    /* 2. HERO SECTION */
+    .hero {
+      position: relative;
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      padding-top: 140px;
+      padding-bottom: 80px;
+      background: 
+        linear-gradient(180deg, rgba(6, 12, 10, 0.85) 0%, var(--bg-dark) 100%),
+        url('https://images.unsplash.com/photo-1543872084-c7bd3822856f?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+      text-align: center;
+    }
+
+    .hero-glow {
+      position: absolute;
+      top: 35%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, var(--forest-glow) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(212, 163, 115, 0.08);
+      border: 1px solid var(--border-dark);
+      padding: 8px 18px;
+      border-radius: 50px;
+      color: var(--ochre-light);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+
+    .hero-badge span {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: #52b788;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #52b788;
+    }
+
+    .hero-title {
+      font-size: 3.5rem;
+      line-height: 1.15;
+      color: var(--cream);
+      margin-bottom: 24px;
+    }
+
+    .hero-title span {
+      background: linear-gradient(135deg, #f3e9dc 30%, var(--ochre) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      max-width: 700px;
+      margin: 0 auto 40px auto;
+      font-weight: 300;
+    }
+
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 32px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--forest) 0%, var(--forest-light) 100%);
+      color: var(--cream);
+      border: 1px solid rgba(212, 163, 115, 0.25);
+      box-shadow: 0 4px 20px rgba(27, 67, 50, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(45, 106, 79, 0.5);
+      border-color: var(--ochre);
+    }
+
+    .btn-secondary {
+      background: rgba(212, 163, 115, 0.05);
+      color: var(--ochre-light);
+      border: 1px solid var(--border-dark);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(212, 163, 115, 0.12);
+      transform: translateY(-2px);
+      border-color: var(--ochre);
+    }
+
+    /* 3. METRICAS DINÁMICAS */
+    .metrics-section {
+      padding: 60px 0;
+      background: var(--bg-card);
+      border-top: 1px solid var(--border-dark);
+      border-bottom: 1px solid var(--border-dark);
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 30px;
+      text-align: center;
+    }
+
+    .metric-card {
+      padding: 10px;
+    }
+
+    .metric-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--ochre);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .metric-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* 4. SECCIÓN CUELLO DE BOTELLA */
+    .bottleneck-section {
+      padding: 100px 0;
+      position: relative;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .section-tag {
+      color: var(--ochre);
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      font-weight: 600;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .section-title {
+      font-size: 2.25rem;
+      color: var(--cream);
+    }
+
+    .highlight-quote {
+      background: rgba(212, 163, 115, 0.03);
+      border-left: 4px solid var(--ochre);
+      padding: 30px;
+      border-radius: 0 16px 16px 0;
+      max-width: 800px;
+      margin: 0 auto 60px auto;
+      font-size: 1.25rem;
+      font-style: italic;
+      color: var(--cream);
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    /* COMPARATIVA DE SOLUCIONES (NARDONE) */
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-top: 40px;
+    }
+
+    .comp-column {
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 40px;
+      transition: var(--transition);
+    }
+
+    .comp-column-red {
+      border-left: 4px solid #f94144;
+    }
+
+    .comp-column-green {
+      border-left: 4px solid #4ade80;
+      background: radial-gradient(circle at top right, rgba(45, 106, 79, 0.1), transparent), var(--bg-card);
+      border-color: var(--border-dark);
+    }
+
+    .comp-title {
+      font-size: 1.4rem;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .comp-title-red {
+      color: #f9844a;
+    }
+
+    .comp-title-green {
+      color: var(--ochre);
+    }
+
+    .comp-list {
+      list-style: none;
+    }
+
+    .comp-item {
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .comp-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .comp-item-header {
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--cream);
+    }
+
+    .comp-item-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    /* 5. SECCIÓN DE DINÁMICA DE SISTEMAS */
+    .loop-section {
+      padding: 100px 0;
+      background: #040807;
+      border-top: 1px solid var(--border-dark);
+      border-bottom: 1px solid var(--border-dark);
+    }
+
+    .loop-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .loop-visual {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .loop-step {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-dark);
+      padding: 16px 24px;
+      border-radius: 12px;
+      position: relative;
+      transition: var(--transition);
+    }
+
+    .loop-step:hover {
+      transform: translateX(5px);
+      border-color: var(--ochre);
+      box-shadow: var(--shadow-glow);
+    }
+
+    .loop-step-num {
+      width: 36px;
+      height: 36px;
+      background: var(--forest);
+      color: var(--ochre-light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      border: 1px solid var(--ochre);
+    }
+
+    .loop-step-text {
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    .loop-arrow {
+      text-align: center;
+      color: var(--ochre);
+      font-size: 1.2rem;
+      margin: -10px 0;
+      animation: bounce 2s infinite;
+    }
+
+    /* 6. PILOTO SANTACARA */
+    .pilot-section {
+      padding: 100px 0;
+    }
+
+    .pilot-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 50px;
+      align-items: center;
+    }
+
+    .pilot-img-box {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--border-dark);
+    }
+
+    .pilot-img {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      display: block;
+      filter: saturate(0.85) brightness(0.9);
+      transition: var(--transition);
+    }
+
+    .pilot-img-box:hover .pilot-img {
+      filter: saturate(1) brightness(1);
+      transform: scale(1.02);
+    }
+
+    .pilot-badge {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: rgba(27, 67, 50, 0.9);
+      color: var(--cream);
+      border: 1px solid var(--ochre);
+      padding: 6px 16px;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      backdrop-filter: blur(8px);
+    }
+
+    .pilot-info {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .pilot-detail-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 24px;
+      display: flex;
+      gap: 16px;
+    }
+
+    .pilot-detail-icon {
+      font-size: 1.8rem;
+      color: var(--ochre);
+    }
+
+    .pilot-detail-title {
+      font-weight: 600;
+      color: var(--cream);
+      margin-bottom: 4px;
+    }
+
+    .pilot-detail-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    /* 7. RECURSOS Y REPLICABILIDAD */
+    .resources-section {
+      padding: 100px 0;
+      background: linear-gradient(180deg, var(--bg-dark) 0%, #030706 100%);
+    }
+
+    .resources-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-top: 45px;
+    }
+
+    .resource-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-dark);
+      border-radius: 16px;
+      padding: 32px;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .resource-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--ochre);
+      box-shadow: var(--shadow-glow);
+    }
+
+    .resource-icon {
+      font-size: 2.2rem;
+      color: var(--ochre);
+      margin-bottom: 20px;
+    }
+
+    .resource-title {
+      font-size: 1.25rem;
+      margin-bottom: 12px;
+      color: var(--cream);
+    }
+
+    .resource-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      flex-grow: 1;
+    }
+
+    .resource-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--ochre-light);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+
+    .resource-link:hover {
+      color: var(--ochre);
+      transform: translateX(4px);
+    }
+
+    /* FOOTER */
+    footer {
+      background: #020403;
+      border-top: 1px solid rgba(212, 163, 115, 0.1);
+      padding: 40px 0;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--cream);
+    }
+
+    .footer-logo span {
+      color: var(--ochre);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .footer-links a:hover {
+      color: var(--ochre-light);
+    }
+
+    .footer-copyright {
+      width: 100%;
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 24px;
+      margin-top: 16px;
+      color: rgba(162, 176, 169, 0.4);
+    }
+
+    /* ANIMACIONES */
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+      }
+      40% {
+        transform: translateY(-5px);
+      }
+      60% {
+        transform: translateY(-3px);
+      }
+    }
+
+    /* RESPONSIVIDAD */
+    @media (max-width: 992px) {
+      .comparison-grid, .loop-grid, .pilot-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      .pilot-img-box {
+        order: -1;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 2.4rem;
+      }
+      .hero-subtitle {
+        font-size: 1rem;
+      }
+      .hero-actions {
+        flex-direction: column;
+        align-items: center;
+      }
+      .hero-actions .btn {
+        width: 100%;
+        max-width: 280px;
+        justify-content: center;
+      }
+      .comp-column {
+        padding: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVEGACIÓN -->
+  <nav>
+    <div class="container nav-inner">
+      <a href="../" class="brand">
+        CPS<span>Proyectos</span>
+      </a>
+      <div class="nav-links">
+        <a href="#problema">El Reto</a>
+        <a href="#modelo">El Modelo</a>
+        <a href="#piloto">Piloto Santacara</a>
+        <a href="#recursos">Documentación</a>
+        <a href="../" class="nav-btn-back nav-cta">
+          <i class="fas fa-arrow-left"></i> Volver al Showcase
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <header class="hero">
+    <div class="hero-glow"></div>
+    <div class="container hero-content">
+      <div class="hero-badge">
+        <span></span> Retorno Demográfico · Navarra
+      </div>
+      <h1 class="hero-title">
+        Reactivación de Vivienda Municipal contra la <span>Despoblación Rural</span>
+      </h1>
+      <p class="hero-subtitle">
+        Aplicación del método <strong>Creative Problem Solving (CPS)</strong> para romper el círculo de la despoblación mediante la transformación de activos públicos infrautilizados en alquileres asequibles.
+      </p>
+      <div class="hero-actions">
+        <a href="#modelo" class="btn btn-primary">Ver el Modelo Sistémico</a>
+        <a href="https://github.com/domoprac/vivienda-pueblo-dinamica/tree/CPS" target="_blank" class="btn btn-secondary">
+          <i class="fab fa-github"></i> Rama CPS en GitHub
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MÉTRICAS DINÁMICAS DEL PILOTO -->
+  <section class="metrics-section">
+    <div class="container metrics-grid">
+      <div class="metric-card">
+        <div class="metric-value">858</div>
+        <div class="metric-label">Habitantes en Santacara (Navarra)</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">75%</div>
+        <div class="metric-label">Subvención Obra (NASUVINSA)</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">3 - 4</div>
+        <div class="metric-label">Años de Período de Retorno</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">30+</div>
+        <div class="metric-label">Interesados en Lista de Espera</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EL CUELLO DE BOTELLA -->
+  <section id="problema" class="bottleneck-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">El Diagnóstico</span>
+        <h2 class="section-title">El verdadero cuello de botella rural</h2>
+      </div>
+
+      <div class="highlight-quote">
+        "En el medio rural no falta demanda latente de nuevos residentes, ni recursos económicos de capital en los ayuntamientos. Falta vivienda disponible. Ese es el único y verdadero cuello de botella."
+      </div>
+
+      <!-- NARDONE: SOLUCIONES INTENTADAS VS NUESTRO MODELO -->
+      <div class="comparison-grid">
+        
+        <!-- INTENTOS CLÁSICOS (FALLIDOS) -->
+        <div class="comp-column comp-column-red">
+          <h3 class="comp-title comp-title-red">
+            <i class="fas fa-times-circle"></i> Soluciones Clásicas que Fallan
+          </h3>
+          <ul class="comp-list">
+            <li class="comp-item">
+              <div class="comp-item-header">Campañas de marketing territorial</div>
+              <div class="comp-item-desc">Generar interés sobre "lo bien que se vive en el pueblo" no sirve si al llegar no hay ninguna casa que alquilar. Bloquea el embudo.</div>
+            </li>
+            <li class="comp-item">
+              <div class="comp-item-header">Ayudas fiscales al empadronamiento</div>
+              <div class="comp-item-desc">Los cheques bebé o rebajas del IBI no anclan población si la gente no tiene un techo físico donde empadronarse previamente.</div>
+            </li>
+            <li class="comp-item">
+              <div class="comp-item-header">Subvenciones directas a propietarios</div>
+              <div class="comp-item-desc">El propietario rural privado a menudo prefiere mantener la casa vacía o para uso familiar esporádico. La ayuda no crea oferta real.</div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- MODELO CPS CIRCULAR -->
+        <div class="comp-column comp-column-green">
+          <h3 class="comp-title comp-title-green">
+            <i class="fas fa-check-circle"></i> Enfoque Sistémico CPS
+          </h3>
+          <ul class="comp-list">
+            <li class="comp-item">
+              <div class="comp-item-header">Inventario de activos ociosos del municipio</div>
+              <div class="comp-item-desc">Identificar inmuebles públicos abandonados (antiguas casas del médico, maestros, curas o locales en desuso).</div>
+            </li>
+            <li class="comp-item">
+              <div class="comp-item-header">Financiación externa subvencionada</div>
+              <div class="comp-item-desc">Rehabilitar con apoyo autonómico (en el caso de Navarra, financiando hasta el 75%, con un límite de 60.000 € por vivienda).</div>
+            </li>
+            <li class="comp-item">
+              <div class="comp-item-header">Captación activa de demanda</div>
+              <div class="comp-item-desc">Canalizar la oferta directamente a los departamentos de RRHH de las industrias y empleadores del entorno geográfico.</div>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- EL MODELO DINÁMICO (BUCLE R1) -->
+  <section id="modelo" class="loop-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">La Dinámica</span>
+        <h2 class="section-title">El Bucle del Retorno Demográfico</h2>
+      </div>
+
+      <div class="loop-grid">
+        <div>
+          <p style="font-size: 1.1rem; margin-bottom: 24px;">
+            El proyecto no es una intervención aislada, sino un **bucle de retroalimentación de refuerzo (R1)** modelado mediante dinámica de sistemas (Forrester).
+          </p>
+          <p style="color: var(--text-muted); margin-bottom: 24px; font-weight: 300;">
+            Al activar el parque municipal de vivienda, los ingresos por alquiler y el aumento en los fondos estatales por mayor población financian la rehabilitación del siguiente activo. Este bucle circular destruye el bucle clásico del declive demográfico.
+          </p>
+          <a href="https://github.com/domoprac/vivienda-pueblo-dinamica/blob/CPS/herramientas/FORRESTER.md" target="_blank" class="btn btn-secondary">
+            Ver Modelado Forrester completo <i class="fas fa-chevron-right"></i>
+          </a>
+        </div>
+
+        <div class="loop-visual">
+          <div class="loop-step">
+            <div class="loop-step-num">1</div>
+            <div class="loop-step-text">Activos municipales vacíos (casa médico, maestros) se activan.</div>
+          </div>
+          <div class="loop-arrow"><i class="fas fa-arrow-down"></i></div>
+          
+          <div class="loop-step">
+            <div class="loop-step-num">2</div>
+            <div class="loop-step-text">Rehabilitación financiada con subvenciones públicas del 75%.</div>
+          </div>
+          <div class="loop-arrow"><i class="fas fa-arrow-down"></i></div>
+
+          <div class="loop-step">
+            <div class="loop-step-num">3</div>
+            <div class="loop-step-text">Viviendas de alquiler asequible y energéticamente eficientes.</div>
+          </div>
+          <div class="loop-arrow"><i class="fas fa-arrow-down"></i></div>
+
+          <div class="loop-step">
+            <div class="loop-step-num">4</div>
+            <div class="loop-step-text">Atracción de familias trabajadoras del entorno (empleo en 30 min).</div>
+          </div>
+          <div class="loop-arrow"><i class="fas fa-arrow-down"></i></div>
+
+          <div class="loop-step">
+            <div class="loop-step-num">5</div>
+            <div class="loop-step-text">Retorno de alquiler ➔ Fondo de reinversión para nuevos activos.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- EL CASO DE ESTUDIO: PILOTO EN SANTACARA -->
+  <section id="piloto" class="pilot-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">El Piloto</span>
+        <h2 class="section-title">El caso real: Santacara (Navarra)</h2>
+      </div>
+
+      <div class="pilot-grid">
+        <div class="pilot-img-box">
+          <img class="pilot-img" src="https://images.unsplash.com/photo-1543872084-c7bd3822856f?auto=format&fit=crop&w=1000&q=80" alt="Santacara Navarra rural">
+          <span class="pilot-badge">Piloto 2024 - 2025</span>
+        </div>
+
+        <div class="pilot-info">
+          <p style="font-size: 1.1rem; color: var(--cream);">
+            Santacara cuenta con 858 habitantes, pero arrastra una tendencia de pérdida neta de 5 vecinos al año.
+          </p>
+
+          <div class="pilot-detail-card">
+            <div class="pilot-detail-icon"><i class="fas fa-tools"></i></div>
+            <div>
+              <h4 class="pilot-detail-title">Inmuebles en Obra</h4>
+              <p class="pilot-detail-desc">La Casa del Médico y la Casa del Cura (inmuebles de los años 80) están actualmente en fase de rehabilitación para habilitar 2 viviendas.</p>
+            </div>
+          </div>
+
+          <div class="pilot-detail-card">
+            <div class="pilot-detail-icon"><i class="fas fa-coins"></i></div>
+            <div>
+              <h4 class="pilot-detail-title">Presupuesto Cerrado</h4>
+              <p class="pilot-detail-desc">Inversión neta asumida por el ayuntamiento reducida a ~40.000 € tras la aplicación de subvenciones. Un retorno estimado de 3-4 años.</p>
+            </div>
+          </div>
+
+          <div class="pilot-detail-card">
+            <div class="pilot-detail-icon"><i class="fas fa-link"></i></div>
+            <div>
+              <h4 class="pilot-detail-title">Gestión Presupuestaria de Sostenibilidad</h4>
+              <p class="pilot-detail-desc">El análisis presupuestario detallado de la Casa del Médico se calcula a través de nuestra herramienta dedicada.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- DOCUMENTACIÓN Y RECURSOS (5 FASES) -->
+  <section id="recursos" class="resources-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Documentación Completa</span>
+        <h2 class="section-title">Informes de Desarrollo del Modelo</h2>
+      </div>
+
+      <p style="text-align: center; max-width: 600px; margin: -20px auto 40px auto; color: var(--text-muted);">
+        Todos los entregables, metodologías y diagramas desarrollados para el Máster en Problem Solving (CPS) están publicados en abierto en la rama CPS.
+      </p>
+
+      <div class="resources-grid">
+        
+        <!-- FASE 1 -->
+        <div class="resource-card">
+          <div class="resource-icon"><i class="far fa-file-alt"></i></div>
+          <h4 class="resource-title">Fase 1: Metodología CPS</h4>
+          <p class="resource-desc">Definición formal del problema de despoblación, análisis CATWOE de stakeholders y desglose de soluciones intentadas bajo el método Nardone.</p>
+          <a href="https://github.com/domoprac/vivienda-pueblo-dinamica/blob/CPS/FASE_1_METODOLOGIA.md" target="_blank" class="resource-link">
+            Ver Fase 1 <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+
+        <!-- FASE 2 & 3 -->
+        <div class="resource-card">
+          <div class="resource-icon"><i class="fas fa-chart-line"></i></div>
+          <h4 class="resource-title">Fase 2 & 3: Análisis de Complejidad</h4>
+          <p class="resource-desc">Diagnóstico mediante diagramas de causa-raíz (Ishikawa) y modelado de dinámica de sistemas de Forrester (bucles de realimentación).</p>
+          <a href="https://github.com/domoprac/vivienda-pueblo-dinamica/blob/CPS/FASE_3_ANALISIS_REALIDAD.md" target="_blank" class="resource-link">
+            Ver Fase 3 <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+
+        <!-- FASE 4 & 5 -->
+        <div class="resource-card">
+          <div class="resource-icon"><i class="fas fa-lightbulb"></i></div>
+          <h4 class="resource-title">Fase 4 & 5: Creatividad e Implantación</h4>
+          <p class="resource-desc">Procesos creativos de generación de alternativas, plan de despliegue, captación de demanda y canales de comunicación con RRHH de polígonos industriales.</p>
+          <a href="https://github.com/domoprac/vivienda-pueblo-dinamica/blob/CPS/FASE_4_CREATIVIDAD.md" target="_blank" class="resource-link">
+            Ver Fase 4 <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container footer-inner">
+      <div class="footer-logo">
+        CPS<span>Proyectos</span>
+      </div>
+      <div class="footer-links">
+        <a href="#problema">El Reto</a>
+        <a href="#modelo">El Modelo</a>
+        <a href="https://github.com/domoprac/vivienda-pueblo-dinamica" target="_blank">Repositorio GitHub</a>
+      </div>
+      <div class="footer-copyright">
+        &copy; 2026 CPS Proyectos. Desarrollado por la Comunidad CPS y la organización domoprac. Caso de estudio académico Santacara (Navarra).
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
