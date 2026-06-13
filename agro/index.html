@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agricultura Resiliente IA — Due Diligence y Certidumbre Climática para el Viñedo</title>
+  <meta name="description" content="Plataforma de inteligencia climática y de mercado para la inversión vitícola en España. Evalúe la viabilidad de sus viñedos a 2050 y 2070 bajo modelos predictivos IPCC.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* VARIABLES Y DISEÑO DEL SISTEMA */
+    :root {
+      --bg-dark:       #0d0406;
+      --bg-card:       #15080b;
+      --wine:          #6b1b29;
+      --wine-light:    #a32e42;
+      --wine-glow:     rgba(163, 46, 66, 0.15);
+      --gold:          #c69c59;
+      --gold-dark:     #9a7337;
+      --gold-light:    #e5c48f;
+      --cream:         #fcfaf6;
+      --text-light:    #f5f0eb;
+      --text-dark:     #2a2224;
+      --text-muted:    #a39396;
+      --border-dark:   rgba(198, 156, 89, 0.15);
+      --border-light:  rgba(107, 27, 41, 0.1);
+      --transition:    all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* TIPOGRAFÍA */
+    h1, h2, h3, .font-serif {
+      font-family: 'Playfair Display', serif;
+      font-weight: 600;
+    }
+
+    /* CONTENEDOR AUXILIAR */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* NAVEGACIÓN PREMIUM */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(13, 4, 6, 0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-dark);
+      height: 80px;
+      display: flex;
+      align-items: center;
+      transition: var(--transition);
+    }
+
+    .nav-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--cream);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .brand span {
+      color: var(--gold);
+    }
+
+    .brand-logo {
+      font-size: 1.6rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+
+    .nav-links a:hover {
+      color: var(--gold);
+    }
+
+    .nav-cta {
+      background: linear-gradient(135deg, var(--wine) 0%, var(--wine-light) 100%);
+      color: var(--cream) !important;
+      padding: 10px 24px;
+      border-radius: 50px;
+      font-weight: 600;
+      box-shadow: 0 4px 20px rgba(107, 27, 41, 0.4);
+      border: 1px solid rgba(198, 156, 89, 0.25);
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(163, 46, 66, 0.6);
+    }
+
+    /* HERO SECTION (CINEMÁTICO) */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 120px;
+      padding-bottom: 80px;
+      background: 
+        linear-gradient(180deg, rgba(13, 4, 6, 0.7) 0%, var(--bg-dark) 100%),
+        url('https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+    }
+
+    .hero-glow {
+      position: absolute;
+      top: 20%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, var(--wine-glow) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 850px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(198, 156, 89, 0.08);
+      border: 1px solid var(--border-dark);
+      padding: 8px 18px;
+      border-radius: 50px;
+      color: var(--gold-light);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+      backdrop-filter: blur(10px);
+    }
+
+    .hero-badge span {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: #4ade80;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #4ade80;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4.4rem);
+      color: var(--cream);
+      line-height: 1.1;
+      margin-bottom: 24px;
+      letter-spacing: -0.02em;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--gold);
+    }
+
+    .hero p.lead {
+      font-size: clamp(1.1rem, 2vw, 1.3rem);
+      color: var(--text-muted);
+      font-weight: 300;
+      line-height: 1.7;
+      max-width: 700px;
+      margin: 0 auto 48px;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 64px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 36px;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+      color: var(--bg-dark);
+      box-shadow: 0 8px 30px rgba(198, 156, 89, 0.3);
+      border: 1px solid var(--gold-light);
+    }
+
+    .btn-gold:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(198, 156, 89, 0.5);
+    }
+
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--cream);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: var(--gold);
+      transform: translateY(-2px);
+    }
+
+    /* STACKED MOCKUP / DATA VISUALIZATION */
+    .hero-mockup {
+      background: rgba(21, 8, 11, 0.7);
+      border: 1px solid var(--border-dark);
+      border-radius: 20px;
+      padding: 24px;
+      max-width: 950px;
+      margin: 0 auto;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(30px);
+      position: relative;
+    }
+
+    .mockup-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(198, 156, 89, 0.1);
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+    }
+
+    .mockup-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .mockup-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+    }
+    .mockup-dot:nth-child(1) { background: #ff5f56; }
+    .mockup-dot:nth-child(2) { background: #ffbd2e; }
+    .mockup-dot:nth-child(3) { background: #27c93f; }
+
+    .mockup-title {
+      font-size: 0.85rem;
+      color: var(--gold-light);
+      font-weight: 500;
+      letter-spacing: 0.05em;
+    }
+
+    .mockup-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+    }
+
+    .mockup-chart {
+      background: rgba(13, 4, 6, 0.5);
+      border: 1px solid rgba(198, 156, 89, 0.08);
+      border-radius: 12px;
+      padding: 24px;
+      min-height: 250px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .chart-bars {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-around;
+      height: 150px;
+      padding-top: 20px;
+    }
+
+    .chart-bar {
+      width: 35px;
+      background: linear-gradient(0deg, var(--wine) 0%, var(--wine-light) 100%);
+      border-radius: 4px 4px 0 0;
+      position: relative;
+      animation: grow 2s ease-out forwards;
+      max-height: 100%;
+    }
+
+    .chart-bar::after {
+      content: attr(data-label);
+      position: absolute;
+      bottom: -24px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .chart-bar::before {
+      content: attr(data-value);
+      position: absolute;
+      top: -24px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.75rem;
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    .mockup-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .sidebar-card {
+      background: rgba(198, 156, 89, 0.05);
+      border: 1px solid var(--border-dark);
+      border-radius: 12px;
+      padding: 18px;
+    }
+
+    .sidebar-card h4 {
+      font-size: 0.85rem;
+      color: var(--gold);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .sidebar-card p {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--cream);
+    }
+
+    .sidebar-card span {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* SECCIÓN EL PROBLEMA (URGENCIA REALISTA) */
+    .problem {
+      background-color: var(--bg-dark);
+      border-top: 1px solid rgba(198, 156, 89, 0.05);
+      padding: 120px 0;
+    }
+
+    .problem-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    .problem-content h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--cream);
+      line-height: 1.2;
+      margin-bottom: 24px;
+    }
+
+    .problem-content h2 span {
+      color: var(--wine-light);
+    }
+
+    .problem-content p {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      font-weight: 300;
+    }
+
+    .problem-highlight {
+      border-left: 3px solid var(--wine-light);
+      padding-left: 20px;
+      margin: 32px 0;
+    }
+
+    .problem-highlight p {
+      font-style: italic;
+      color: var(--cream);
+      font-size: 1.1rem !important;
+      line-height: 1.6;
+    }
+
+    .problem-visual {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--border-dark);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    }
+
+    .problem-visual img {
+      width: 100%;
+      display: block;
+      filter: grayscale(20%) contrast(110%);
+    }
+
+    .problem-visual-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(0deg, var(--bg-dark) 0%, transparent 100%);
+      padding: 30px;
+      color: var(--cream);
+    }
+
+    /* SECCIÓN LA SOLUCIÓN (CARACTERÍSTICAS) */
+    .solution {
+      background-color: #110508;
+      padding: 120px 0;
+      border-top: 1px solid var(--border-dark);
+      border-bottom: 1px solid var(--border-dark);
+    }
+
+    .solution-header {
+      text-align: center;
+      max-width: 750px;
+      margin: 0 auto 80px;
+    }
+
+    .solution-header h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--cream);
+      margin-bottom: 20px;
+    }
+
+    .solution-header p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      font-weight: 300;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-dark);
+      border-radius: 16px;
+      padding: 40px 32px;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--gold);
+      box-shadow: 0 16px 40px rgba(107, 27, 41, 0.2);
+    }
+
+    .feature-icon {
+      font-size: 2.2rem;
+      margin-bottom: 24px;
+      display: inline-block;
+    }
+
+    .feature-card h3 {
+      font-size: 1.3rem;
+      color: var(--cream);
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+
+    .feature-card p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      font-weight: 300;
+      line-height: 1.7;
+    }
+
+    /* SECCIÓN DOBLE CAMINO (BODEGA VS AGRICULTOR) */
+    .paths {
+      padding: 120px 0;
+      background: var(--bg-dark);
+    }
+
+    .paths-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+    }
+
+    .path-card {
+      background: linear-gradient(180deg, rgba(21, 8, 11, 0.4) 0%, rgba(21, 8, 11, 0.8) 100%);
+      border: 1px solid var(--border-dark);
+      border-radius: 24px;
+      padding: 56px 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 480px;
+    }
+
+    .path-card.premium-border {
+      border: 1px solid var(--gold);
+      position: relative;
+    }
+
+    .path-card.premium-border::before {
+      content: 'B2B CORPORATIVO';
+      position: absolute;
+      top: -12px;
+      left: 48px;
+      background: var(--gold);
+      color: var(--bg-dark);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      padding: 4px 12px;
+      border-radius: 4px;
+    }
+
+    .path-top h3 {
+      font-size: 2.2rem;
+      color: var(--cream);
+      margin-bottom: 20px;
+    }
+
+    .path-top p.desc {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+      font-weight: 300;
+    }
+
+    .path-bullets {
+      list-style: none;
+      margin-bottom: 40px;
+    }
+
+    .path-bullets li {
+      position: relative;
+      padding-left: 28px;
+      margin-bottom: 16px;
+      font-size: 0.95rem;
+      color: var(--cream);
+      font-weight: 300;
+    }
+
+    .path-bullets li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    /* SECCIÓN SIMULADOR INTERACTIVO */
+    .simulator {
+      background: linear-gradient(180deg, var(--bg-dark) 0%, #15080b 100%);
+      padding: 120px 0;
+    }
+
+    .sim-card {
+      background: rgba(21, 8, 11, 0.9);
+      border: 1px solid var(--gold);
+      border-radius: 24px;
+      padding: 64px 48px;
+      text-align: center;
+      max-width: 850px;
+      margin: 0 auto;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sim-card h2 {
+      font-size: 2.5rem;
+      color: var(--cream);
+      margin-bottom: 16px;
+    }
+
+    .sim-card p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-bottom: 40px;
+      font-weight: 300;
+    }
+
+    .sim-form {
+      display: flex;
+      max-width: 600px;
+      margin: 0 auto;
+      gap: 12px;
+    }
+
+    .sim-input {
+      flex: 1;
+      background: rgba(13, 4, 6, 0.6);
+      border: 1px solid var(--border-dark);
+      border-radius: 50px;
+      padding: 18px 28px;
+      color: var(--cream);
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .sim-input:focus {
+      border-color: var(--gold);
+      background: rgba(13, 4, 6, 0.9);
+    }
+
+    .sim-btn {
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+      color: var(--bg-dark);
+      border: none;
+      padding: 18px 36px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+
+    .sim-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(198, 156, 89, 0.4);
+    }
+
+    .sim-loader {
+      display: none;
+      margin-top: 24px;
+      font-size: 0.9rem;
+      color: var(--gold-light);
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(198, 156, 89, 0.3);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    .sim-result {
+      display: none;
+      margin-top: 32px;
+      background: rgba(13, 4, 6, 0.8);
+      border: 1px solid var(--border-dark);
+      border-radius: 16px;
+      padding: 24px;
+      text-align: left;
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    .result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(198, 156, 89, 0.1);
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+    }
+
+    .result-score {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--gold);
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .result-item h5 {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .result-item p {
+      font-size: 1rem;
+      color: var(--cream);
+      font-weight: 600;
+      margin-bottom: 0;
+    }
+
+    /* SECCIÓN DE PRECIOS */
+    .pricing {
+      padding: 120px 0;
+      background-color: #0f0507;
+      border-top: 1px solid var(--border-dark);
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      align-items: stretch;
+    }
+
+    .price-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-dark);
+      border-radius: 20px;
+      padding: 48px 36px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .price-card.featured {
+      border: 2px solid var(--gold);
+      box-shadow: 0 20px 50px rgba(107, 27, 41, 0.3);
+      transform: scale(1.03);
+    }
+
+    .price-card.featured::before {
+      content: 'RECOMENDADO PARA BODEGAS';
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--gold);
+      color: var(--bg-dark);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      padding: 4px 16px;
+      border-radius: 50px;
+      white-space: nowrap;
+    }
+
+    .price-title {
+      font-size: 1.4rem;
+      color: var(--cream);
+      margin-bottom: 12px;
+    }
+
+    .price-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.2rem;
+      font-weight: 700;
+      color: var(--cream);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .price-value span {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      color: var(--text-muted);
+      font-weight: 300;
+    }
+
+    .price-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+      font-weight: 300;
+      min-height: 40px;
+    }
+
+    .price-features {
+      list-style: none;
+      margin-bottom: 40px;
+      border-top: 1px solid rgba(198, 156, 89, 0.1);
+      padding-top: 24px;
+    }
+
+    .price-features li {
+      position: relative;
+      padding-left: 24px;
+      margin-bottom: 14px;
+      font-size: 0.9rem;
+      color: var(--cream);
+      font-weight: 300;
+    }
+
+    .price-features li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--gold);
+    }
+
+    .price-btn {
+      width: 100%;
+      text-align: center;
+      justify-content: center;
+    }
+
+    .price-enterprise {
+      grid-column: 1 / -1;
+      background: linear-gradient(135deg, rgba(21, 8, 11, 0.8) 0%, rgba(13, 4, 6, 0.8) 100%);
+      border: 1px solid var(--border-dark);
+      border-radius: 20px;
+      padding: 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 40px;
+    }
+
+    .ent-left h3 {
+      font-size: 1.8rem;
+      color: var(--cream);
+      margin-bottom: 8px;
+    }
+
+    .ent-left p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      font-weight: 300;
+    }
+
+    /* FOOTER Y AVISO LEGAL */
+    footer {
+      background-color: var(--bg-dark);
+      border-top: 1px solid var(--border-dark);
+      padding: 80px 0 40px;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 64px;
+      margin-bottom: 64px;
+    }
+
+    .footer-brand h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--cream);
+      margin-bottom: 16px;
+    }
+
+    .footer-brand p {
+      font-weight: 300;
+      margin-bottom: 20px;
+    }
+
+    .footer-links h5 {
+      color: var(--cream);
+      font-size: 0.95rem;
+      margin-bottom: 20px;
+    }
+
+    .footer-links ul {
+      list-style: none;
+    }
+
+    .footer-links ul li {
+      margin-bottom: 12px;
+    }
+
+    .footer-links ul li a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .footer-links ul li a:hover {
+      color: var(--gold);
+    }
+
+    .footer-disclaimer {
+      border-top: 1px solid rgba(198, 156, 89, 0.1);
+      padding-top: 32px;
+      font-size: 0.75rem;
+      line-height: 1.7;
+    }
+
+    .footer-disclaimer strong {
+      color: var(--cream);
+    }
+
+    /* ANIMACIONES */
+    @keyframes grow {
+      from { height: 0; }
+      to { height: var(--h); }
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .pricing-grid {
+        grid-template-columns: 1fr;
+      }
+      .price-card.featured {
+        transform: scale(1);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .problem-grid, .paths-grid, .footer-grid, .mockup-grid {
+        grid-template-columns: 1fr;
+      }
+      .mockup-sidebar {
+        flex-direction: row;
+      }
+      .nav-links {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVEGACIÓN -->
+  <nav>
+    <div class="container nav-inner">
+      <a href="#" class="brand">🍇 Agricultura <span>Resiliente</span></a>
+      <div class="nav-links">
+        <a href="../">← Volver al Showcase</a>
+        <a href="#problema">El Riesgo</a>
+        <a href="#solucion">Tecnología</a>
+        <a href="#simulador">Simular Parcela</a>
+        <a href="#precios">Planes</a>
+        <a href="https://agricultura-resiliente-production.up.railway.app" class="nav-cta">Acceso Plataforma →</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <div class="container hero-content">
+      <div class="hero-badge">
+        <span></span> Auditoría Climática de Viñedos · Proyecciones 2050
+      </div>
+      <h1>¿Las tierras donde planta viñedo hoy <em>serán viables en 2050</em>?</h1>
+      <p class="lead">
+        El cambio climático está secando cepas tradicionales y congelando inversiones. Asegure la reubicación de sus viñedos con predicciones científicas basadas en modelos IPCC e imágenes Sentinel-2.
+      </p>
+      
+      <div class="hero-btns">
+        <a href="#simulador" class="btn btn-gold">Evaluar Parcela Gratis</a>
+        <a href="#precios" class="btn btn-outline">Ver Planes de Viabilidad</a>
+      </div>
+
+      <!-- MOCKUP INTERACTIVO SINTÉTICO -->
+      <div class="hero-mockup">
+        <div class="mockup-header">
+          <div class="mockup-dots">
+            <div class="mockup-dot"></div>
+            <div class="mockup-dot"></div>
+            <div class="mockup-dot"></div>
+          </div>
+          <div class="mockup-title">MOTOR DE AUDITORÍA CLIMÁTICA · PANEL GENERAL</div>
+          <div></div>
+        </div>
+        <div class="mockup-grid">
+          <div class="mockup-chart">
+            <div class="chart-header">
+              <span>Winkler (integral térmica acumulada en GDA)</span>
+              <span style="color: var(--wine-light);">Peligro: >2200 GDA</span>
+            </div>
+            <div class="chart-bars">
+              <div class="chart-bar" style="--h: 60%;" data-value="1.540" data-label="Histórico 1990"></div>
+              <div class="chart-bar" style="--h: 75%;" data-value="1.780" data-label="Actual 2026"></div>
+              <div class="chart-bar" style="--h: 92%; background: linear-gradient(0deg, var(--wine-light) 0%, #ff5f56 100%);" data-value="2.150" data-label="IPCC 2050 (SSP5)"></div>
+            </div>
+          </div>
+          <div class="mockup-sidebar">
+            <div class="sidebar-card">
+              <h4>Riesgo Hídrico (SPEI)</h4>
+              <p style="color: #ff5f56;">Crítico (-1.85)</p>
+              <span>Estrés por sequía acumulada</span>
+            </div>
+            <div class="sidebar-card">
+              <h4>Aptitud de Variedad</h4>
+              <p style="color: var(--gold);">Reconvertir</p>
+              <span>Tempranillo en declive</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EL PROBLEMA -->
+  <section class="problem" id="problema">
+    <div class="container problem-grid">
+      <div class="problem-content">
+        <h2>La viña se seca, las inversiones <span>se congelan</span></h2>
+        <p>
+          Las bodegas históricas y los fondos agrícolas en España están parando la compra de nuevas tierras rústicas. Plantar un viñedo requiere invertir hasta 35.000 € por hectárea con un horizonte de retorno de 30 años.
+        </p>
+        <p>
+          Tomar esa decisión con datos históricos del suelo ya no es suficiente. El calor extremo está adelantando cosechas, quemando hojas y subiendo el grado alcohólico a niveles que amenazan la tipicidad del terroir y la calidad del vino.
+        </p>
+        <div class="problem-highlight">
+          <p>
+            "Muchas bodegas buscan desesperadamente refugios climáticos en altura o en laderas norte. Pero comprar e iniciar una plantación a ciegas es un riesgo patrimonial inasumible."
+          </p>
+        </div>
+        <p>
+          Nuestra IA ayuda a resolver este dilema: evaluamos la resiliencia microclimática a 30 años antes de arrancar o adquirir una nueva finca.
+        </p>
+      </div>
+      <div class="problem-visual">
+        <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=800&q=80" alt="Estrés hídrico en la viña por cambio climático">
+        <div class="problem-visual-overlay">
+          <h4 class="font-serif">Priorat interior, España</h4>
+          <p style="font-size: 0.85rem; opacity: 0.85; margin-bottom: 0;">SPEI de sequía histórico en mínimos · Necesidad de reubicación varietal 2050</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LA SOLUCIÓN (CARACTERÍSTICAS) -->
+  <section class="solution" id="solucion">
+    <div class="container">
+      <div class="solution-header">
+        <h2>Certidumbre científica para la inversión agrícola</h2>
+        <p>Dejamos atrás las suposiciones. Combinamos datos empíricos de catastro, sensores satelitales Sentinel-2 y los modelos del IPCC para auditar la salud de sus activos.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">📈</div>
+          <h3>Motor Predictivo 2050-2070</h3>
+          <p>Modelamos los índices térmicos Winkler, Huglin e índice de noches frescas bajo los escenarios climáticos del IPCC (SSP2-4.5 y SSP5-8.5).</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🗺️</div>
+          <h3>Integración SIGPAC y Catastro</h3>
+          <p>Localización geométrica de recintos de viñedo reales, análisis de pendientes (DEM GLO-30), orientación de laderas y accesibilidad.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🛰️</div>
+          <h3>NDVI Sentinel-2</h3>
+          <p>Detección temprana de anomalías en el vigor de la vid y estrés hídrico oculto mediante imágenes satelitales multiespectrales actualizadas.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🍇</div>
+          <h3>Asesor Varietal Adaptado</h3>
+          <p>Análisis de afinidad climática futura. Descubra qué uvas de calidad o variedades de secano resistirán las sequías extremas del futuro.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOS CAMINOS -->
+  <section class="paths">
+    <div class="container paths-grid">
+      <div class="path-card premium-border">
+        <div class="path-top">
+          <h3>Bodegas y Fondos Vitícolas</h3>
+          <p class="desc">Para consejos de administración, enólogos jefes e inversores agrícolas con exposición en tierras.</p>
+          <ul class="path-bullets">
+            <li>Due Diligence climática para compras de fincas de alto valor.</li>
+            <li>Localización de refugios climáticos óptimos en altura.</li>
+            <li>Reportes en PDF integrales para la toma de decisiones del Consejo.</li>
+            <li>API REST para conectar con su ERP agrícola y tasadoras.</li>
+          </ul>
+        </div>
+        <a href="#precios" class="btn btn-gold">Plan de Viabilidad Profesional</a>
+      </div>
+
+      <div class="path-card">
+        <div class="path-top">
+          <h3>Pequeños Agricultores de Secano</h3>
+          <p class="desc">Para parcelistas individuales y cooperativas agrarias locales que buscan rentabilidad.</p>
+          <ul class="path-bullets">
+            <li>Recomendaciones sencillas sobre qué variedad sembrar.</li>
+            <li>Filtro del índice de sequía y aptitud hídrica de su parcela actual.</li>
+            <li>Informes rápidos de bajo coste con referencia catastral.</li>
+            <li>Protección ante el abandono del secano histórico.</li>
+          </ul>
+        </div>
+        <a href="#simulador" class="btn btn-outline">Evaluar mi Finca Gratis</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SIMULADOR INTERACTIVO -->
+  <section class="simulator" id="simulador">
+    <div class="container">
+      <div class="sim-card">
+        <h2>Simule la resiliencia de su parcela</h2>
+        <p>Introduzca la referencia catastral de 14 caracteres de SIGPAC para ejecutar un escaneo básico preliminar de estrés hídrico e integral térmica.</p>
+        
+        <div class="sim-form">
+          <input type="text" class="sim-input" id="refCatInput" placeholder="Ej: 26036A00500123" maxlength="14">
+          <button class="sim-btn" onclick="executeSimulation()">Analizar Parcela</button>
+        </div>
+
+        <div class="sim-loader" id="simLoader">
+          <div class="spinner"></div>
+          <span>Consultando base de datos e imágenes Sentinel-2...</span>
+        </div>
+
+        <!-- RESULTADO SINTÉTICO (INTERACTIVO) -->
+        <div class="sim-result" id="simResult">
+          <div class="result-header">
+            <h4 class="font-serif">Parcela Analizada: <span id="resRef" style="color: var(--gold);"></span></h4>
+            <div class="result-score" id="resScore">92/100</div>
+          </div>
+          <div class="result-grid">
+            <div class="result-item">
+              <h5>Winkler Proyectado 2050</h5>
+              <p id="resWinkler">1.820 GDA (Óptimo)</p>
+            </div>
+            <div class="result-item">
+              <h5>Riesgo Sequía (SPEI)</h5>
+              <p id="resSpei" style="color: #4ade80;">Moderado (-0.75)</p>
+            </div>
+            <div class="result-item">
+              <h5>Asesor Varietal</h5>
+              <p id="resVariedad">Garnacha, Syrah</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TARIFAS -->
+  <section class="pricing" id="precios">
+    <div class="container">
+      <div class="solution-header">
+        <h2>Suscripciones transparentes</h2>
+        <p>Desde agricultores locales hasta grandes bodegas multinacionales. Sin permanencia, cancele o modifique cuando quiera.</p>
+      </div>
+
+      <div class="pricing-grid">
+        <!-- DEMO -->
+        <div class="price-card">
+          <div>
+            <h3 class="price-title">Demo</h3>
+            <div class="price-value">0€<span>/mes</span></div>
+            <p class="price-desc">Ideal para familiarizarse con la plataforma y simular una parcela puntual.</p>
+            <ul class="price-features">
+              <li>Análisis de 1 zona geográfica</li>
+              <li>Dashboard público interactivo</li>
+              <li>Simulación catastral básica</li>
+              <li>Sin proyecciones IPCC 2050</li>
+            </ul>
+          </div>
+          <a href="https://agricultura-resiliente-production.up.railway.app" class="btn btn-outline price-btn">Acceder Gratis</a>
+        </div>
+
+        <!-- STARTER -->
+        <div class="price-card">
+          <div>
+            <h3 class="price-title">Starter</h3>
+            <div class="price-value">290€<span>/mes</span></div>
+            <p class="price-desc">Perfecto para pequeños agricultores y asesores de fincas locales.</p>
+            <ul class="price-features">
+              <li>Auditoría de 5 zonas simultáneas</li>
+              <li>Proyecciones climáticas IPCC 2050</li>
+              <li>Recomendación varietal en secano</li>
+              <li>Descarga de reportes PDF básicos</li>
+              <li>Soporte técnico por correo</li>
+            </ul>
+          </div>
+          <a href="https://agricultura-resiliente-production.up.railway.app" class="btn btn-outline price-btn">Contratar Starter</a>
+        </div>
+
+        <!-- PROFESSIONAL -->
+        <div class="price-card featured">
+          <div>
+            <h3 class="price-title">Professional</h3>
+            <div class="price-value">890€<span>/mes</span></div>
+            <p class="price-desc">Diseñado para bodegas con viñedos en explotación y búsqueda activa de tierras.</p>
+            <ul class="price-features">
+              <li>Análisis de zonas y parcelas ilimitadas</li>
+              <li>Proyecciones avanzadas IPCC 2070</li>
+              <li>Integración satelital NDVI Sentinel-2</li>
+              <li>Auditoría catastral y pendientes reales</li>
+              <li>Acceso a API REST de scoring</li>
+              <li>Soporte dedicado 24/7</li>
+            </ul>
+          </div>
+          <a href="https://agricultura-resiliente-production.up.railway.app" class="btn btn-gold price-btn">Obtener Professional</a>
+        </div>
+      </div>
+
+      <!-- INFORME Y ENTERPRISE -->
+      <div class="price-enterprise">
+        <div class="ent-left">
+          <h3>Auditoría Puntual de Finca (Due Diligence)</h3>
+          <p>¿Va a comprar una nueva propiedad vitícola o quiere auditar una finca concreta? Analizamos la resiliencia hídrica y térmica ad-hoc de su parcela. Entregamos dossier ejecutivo PDF de 12 páginas para su consejo.</p>
+        </div>
+        <a href="mailto:hola@cpsproyectos.com" class="btn btn-outline" style="white-space: nowrap;">Desde 2.500€ · Solicitar</a>
+      </div>
+
+      <div class="price-enterprise" style="margin-top: 20px; background: rgba(198, 156, 89, 0.03);">
+        <div class="ent-left">
+          <h3>Plan Enterprise (Gran Corporación)</h3>
+          <p>Para grandes consorcios vinícolas y fondos de inversión agrícola multi-cultivo (olivar, almendro, pistacho). Integración catastral propia, SLA garantizado, modelos ML dedicados y usuarios ilimitados.</p>
+        </div>
+        <a href="mailto:hola@cpsproyectos.com" class="btn btn-outline" style="white-space: nowrap;">Desde 3.500€/mes · Contactar</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h4>🍇 Agricultura Resiliente IA</h4>
+          <p>Inteligencia artificial aplicada a la inversión vitícola en España. Aseguramos el viñedo del mañana frente a las sequías extremas del presente.</p>
+          <p>Desarrollado en base a proyecciones IPCC AR6, datos históricos de AEMET y teledetección Sentinel-2.</p>
+        </div>
+        <div class="footer-links">
+          <h5>Plataforma</h5>
+          <ul>
+            <li><a href="#problema">El Riesgo</a></li>
+            <li><a href="#solucion">Tecnología</a></li>
+            <li><a href="#simulador">Simular Parcela</a></li>
+            <li><a href="#precios">Tarifas y Planes</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h5>Contacto y Legal</h5>
+          <ul>
+            <li><a href="mailto:hola@cpsproyectos.com">hola@cpsproyectos.com</a></li>
+            <li><a href="https://agricultura-resiliente-production.up.railway.app">Acceso Usuarios</a></li>
+            <li><a href="#precios">Auditorías Ad-Hoc</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-disclaimer">
+        <strong>AVISOS LEGALES Y EXENCIONES DE RESPONSABILIDAD:</strong><br>
+        1. <strong>Información no vinculante:</strong> Los análisis de resiliencia climática, históricos térmicos Winkler, sequía SPEI y NDVI Sentinel-2 son modelos analíticos de soporte a la decisión. No constituyen en ningún caso asesoramiento de inversión o financiero vinculante.<br>
+        2. <strong>Limitación predictiva:</strong> Las simulaciones basadas en escenarios IPCC (SSP2-4.5, SSP5-8.5) representan estimaciones de probabilidad climatológica y física, sujetas a variaciones climáticas globales imprevistas. Los rendimientos históricos o esperados no garantizan resultados reales en el futuro.<br>
+        3. <strong>Debida Diligencia:</strong> Se recomienda encarecidamente a bodegas, inversores y agricultores llevar a cabo auditorías agronómicas físicas sobre el terreno, catas de suelo in-situ y confirmaciones con ingenieros agrónomos titulados antes de realizar transacciones comerciales o inversiones inmobiliarias rústicas.<br>
+        4. <strong>Cumplimiento Normativo:</strong> Los datos de propietarios rústicos en la plataforma han sido anonimizados en estricto cumplimiento del Reglamento General de Protección de Datos (RGPD) y la LOPD GDD.<br><br>
+        © 2026 Agricultura Resiliente IA · Desarrollado por CPS Proyectos en el marco del Máster en Problem Solving · Pagos seguros procesados por Stripe.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // SIMULACIÓN INTERACTIVA DE PARCELA
+    function executeSimulation() {
+      const input = document.getElementById('refCatInput').value.trim();
+      const loader = document.getElementById('simLoader');
+      const result = document.getElementById('simResult');
+      
+      if (input.length !== 14) {
+        alert('Por favor, introduzca una referencia catastral SIGPAC válida de 14 caracteres numéricos/letras.');
+        return;
+      }
+
+      // Mostrar cargando
+      loader.style.display = 'flex';
+      result.style.display = 'none';
+
+      // Simulamos la llamada a la API
+      setTimeout(() => {
+        loader.style.display = 'none';
+        
+        // Datos sintéticos adaptados
+        document.getElementById('resRef').innerText = input;
+        
+        // Calculamos un score dinámico basado en el valor de la ref
+        const digit = parseInt(input.replace(/\D/g, '').substring(0, 2)) || 45;
+        const score = 60 + (digit % 38);
+        document.getElementById('resScore').innerText = score + '/100';
+        
+        // Colores de score
+        if (score >= 85) {
+          document.getElementById('resScore').style.color = '#4ade80';
+          document.getElementById('resSpei').innerText = 'Bajo / Resiliente (-0.45)';
+          document.getElementById('resSpei').style.color = '#4ade80';
+          document.getElementById('resWinkler').innerText = '1.680 GDA (Óptimo)';
+          document.getElementById('resVariedad').innerText = 'Garnacha, Tempranillo, Verdejo';
+        } else if (score >= 70) {
+          document.getElementById('resScore').style.color = 'var(--gold)';
+          document.getElementById('resSpei').innerText = 'Moderado (-0.95)';
+          document.getElementById('resSpei').style.color = 'var(--gold)';
+          document.getElementById('resWinkler').innerText = '1.850 GDA (Calor medio)';
+          document.getElementById('resVariedad').innerText = 'Syrah, Cariñena, Monastrell';
+        } else {
+          document.getElementById('resScore').style.color = '#f87171';
+          document.getElementById('resSpei').innerText = 'Crítico / Árido (-1.78)';
+          document.getElementById('resSpei').style.color = '#f87171';
+          document.getElementById('resWinkler').innerText = '2.180 GDA (Calor crítico)';
+          document.getElementById('resVariedad').innerText = 'Monastrell, Bobal, Macabeo';
+        }
+
+        result.style.display = 'block';
+      }, 1500);
+    }
+  </script>
+
+</body>
+</html>

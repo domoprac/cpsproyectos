@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CPS Proyectos — Escaparate Tecnológico de la Comunidad CPS</title>
+  <meta name="description" content="Plataforma showcase de proyectos tecnológicos creados por la comunidad del Máster en Problem Solving (CPS). Soluciones premium de ingeniería, software y hardware.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Hojas de Estilo -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- NAVEGACIÓN -->
+  <nav>
+    <div class="container nav-inner">
+      <a href="#" class="brand">
+        CPS<span>Proyectos</span>
+      </a>
+      <div class="nav-links">
+        <a href="#proyectos">Proyectos</a>
+        <a href="docs/contribucion.md" target="_blank">Guía de Contribución</a>
+        <a href="https://github.com/domoprac" target="_blank" class="nav-cta">
+          <i class="fab fa-github"></i> domoprac
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <header class="hero">
+    <div class="hero-glow"></div>
+    <div class="container hero-content">
+      <div class="hero-badge">
+        <span></span> Lanzadera de Proyectos CPS
+      </div>
+      <h1 class="hero-title">
+        Ingeniería Real para <span>Problemas Complejos</span>
+      </h1>
+      <p class="hero-subtitle">
+        Escaparate tecnológico de la comunidad de graduados del Máster en Problem Solving (CPS). Proyectos reales de hardware, IA predictiva y automatización listos para el mercado.
+      </p>
+      <div class="hero-actions">
+        <a href="#proyectos" class="btn btn-primary">Explorar Showcase</a>
+        <a href="docs/contribucion.md" target="_blank" class="btn btn-secondary">Subir Proyecto</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- SECCIÓN SHOWCASE -->
+  <main id="proyectos" class="showcase-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Showcase</span>
+        <h2 class="section-title">Proyectos Activos de la Comunidad</h2>
+      </div>
+
+      <div class="projects-grid">
+        
+        <!-- PROYECTO 1: AGRICULTURA RESILIENTE IA -->
+        <article class="project-card">
+          <div class="card-header-img" style="background-image: url('https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=800&q=80');">
+            <span class="card-badge badge-featured">Proyecto Insignia</span>
+          </div>
+          <div class="card-content">
+            <h3 class="card-title">Agricultura Resiliente IA</h3>
+            <p class="card-description">
+              Plataforma de inteligencia climática e inversión vitícola en España. Evalúa la viabilidad de viñedos a 2050/2070 bajo modelos predictivos del IPCC y simula parcelas catastrales mediante Sentinel-2 y capas SIGPAC.
+            </p>
+            <div class="card-tech-stack">
+              <span class="tech-tag">Python</span>
+              <span class="tech-tag">Streamlit</span>
+              <span class="tech-tag">Sentinel-2</span>
+              <span class="tech-tag">SIGPAC</span>
+              <span class="tech-tag">WMS Catastro</span>
+            </div>
+            <div class="card-footer">
+              <a href="agro/" class="card-btn card-btn-primary">
+                Ver Demo <i class="fas fa-arrow-right"></i>
+              </a>
+              <a href="https://github.com/domoprac/agricultura-resiliente" target="_blank" class="card-btn card-btn-secondary">
+                <i class="fab fa-github"></i> Repositorio
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- PROYECTO 2: VENDING BAR INTELIGENTE -->
+        <article class="project-card">
+          <div class="card-header-img" style="background-image: url('https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=800&q=80');">
+            <span class="card-badge badge-dev">En Desarrollo</span>
+          </div>
+          <div class="card-content">
+            <h3 class="card-title">Vending Bar Inteligente</h3>
+            <p class="card-description">
+              Sistema automatizado de dispensación de bebidas con control de stock en tiempo real, pasarela de pago integrada para redes IoT y analítica de consumo centralizada.
+            </p>
+            <div class="card-tech-stack">
+              <span class="tech-tag">C++</span>
+              <span class="tech-tag">ESP32</span>
+              <span class="tech-tag">Node.js</span>
+              <span class="tech-tag">MQTT</span>
+              <span class="tech-tag">IoT</span>
+            </div>
+            <div class="card-footer">
+              <span class="card-btn card-btn-secondary" style="cursor: not-allowed; opacity: 0.5;">
+                Próximamente
+              </span>
+              <a href="https://github.com/domoprac/vending-bar" target="_blank" class="card-btn card-btn-secondary">
+                <i class="fab fa-github"></i> Repositorio
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- PROYECTO 3: AURORI -->
+        <article class="project-card">
+          <div class="card-header-img" style="background-image: url('https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=800&q=80');">
+            <span class="card-badge badge-dev">En Desarrollo</span>
+          </div>
+          <div class="card-content">
+            <h3 class="card-title">Asistente Robótico AURORI</h3>
+            <p class="card-description">
+              Plataforma robótica móvil autónoma diseñada para la monitorización de variables ambientales, seguridad e interacción en entornos industriales inteligentes mediante visión artificial.
+            </p>
+            <div class="card-tech-stack">
+              <span class="tech-tag">ROS2</span>
+              <span class="tech-tag">Python</span>
+              <span class="tech-tag">OpenCV</span>
+              <span class="tech-tag">LiDAR</span>
+              <span class="tech-tag">Raspberry Pi</span>
+            </div>
+            <div class="card-footer">
+              <span class="card-btn card-btn-secondary" style="cursor: not-allowed; opacity: 0.5;">
+                Próximamente
+              </span>
+              <a href="https://github.com/domoprac/aurori" target="_blank" class="card-btn card-btn-secondary">
+                <i class="fab fa-github"></i> Repositorio
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- PROYECTO 4: DOMOPRAC SMART HOME -->
+        <article class="project-card">
+          <div class="card-header-img" style="background-image: url('https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=800&q=80');">
+            <span class="card-badge badge-soon">Próximamente</span>
+          </div>
+          <div class="card-content">
+            <h3 class="card-title">DomoPrac Smart Home</h3>
+            <p class="card-description">
+              Plataforma de domótica descentralizada de código abierto, enfocada en la privacidad del usuario mediante procesamiento local de datos y optimización de consumo energético adaptativo.
+            </p>
+            <div class="card-tech-stack">
+              <span class="tech-tag">Rust</span>
+              <span class="tech-tag">WebAssembly</span>
+              <span class="tech-tag">Zigbee</span>
+              <span class="tech-tag">SQLite</span>
+            </div>
+            <div class="card-footer">
+              <span class="card-btn card-btn-secondary" style="cursor: not-allowed; opacity: 0.5; width: 100%;">
+                En cola de desarrollo
+              </span>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- CTA SECCIÓN: COLABORAR -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-box">
+        <h2 class="cta-title">¿Eres miembro de la Comunidad CPS?</h2>
+        <p class="cta-text">
+          Sube la landing page de tu proyecto tecnológico y añádela al escaparate de CPS Proyectos. Sigue nuestro estándar técnico y abre un Pull Request hoy mismo.
+        </p>
+        <a href="docs/contribucion.md" target="_blank" class="btn btn-primary">
+          <i class="fas fa-book"></i> Leer Guía de Contribución
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container footer-inner">
+      <div class="footer-logo">
+        CPS<span>Proyectos</span>
+      </div>
+      <div class="footer-links">
+        <a href="#proyectos">Proyectos</a>
+        <a href="docs/contribucion.md" target="_blank">Estandarización</a>
+        <a href="https://github.com/domoprac" target="_blank">Organización GitHub</a>
+      </div>
+      <div class="footer-copyright">
+        &copy; 2026 CPS Proyectos. Todos los derechos reservados. Desarrollado por la Comunidad CPS y la organización domoprac.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Script para cambiar el estilo del nav al hacer scroll -->
+  <script>
+    window.addEventListener('scroll', () => {
+      const nav = document.querySelector('nav');
+      if (window.scrollY > 50) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+    });
+  </script>
+</body>
+</html>
