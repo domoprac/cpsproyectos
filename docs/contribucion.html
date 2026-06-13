@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guía de Contribución — CPS Proyectos</title>
+  <meta name="description" content="Especificaciones técnicas y pautas de diseño para subir tu proyecto al escaparate de CPS Proyectos.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --bg-dark:       #0d0406;
+      --bg-card:       #15080b;
+      --wine:          #6b1b29;
+      --wine-light:    #a32e42;
+      --wine-glow:     rgba(163, 46, 66, 0.15);
+      --gold:          #c69c59;
+      --gold-dark:     #9a7337;
+      --gold-light:    #e5c48f;
+      --cream:         #fcfaf6;
+      --text-light:    #f5f0eb;
+      --text-muted:    #a39396;
+      --border-dark:   rgba(198, 156, 89, 0.15);
+      --transition:    all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      line-height: 1.7;
+      padding-top: 100px;
+      padding-bottom: 60px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* NAV REUTILIZADO */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(13, 4, 6, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-dark);
+      height: 80px;
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--cream);
+      text-decoration: none;
+    }
+
+    .brand span {
+      color: var(--gold);
+    }
+
+    .nav-btn-back {
+      color: var(--gold-light);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--border-dark);
+      padding: 8px 18px;
+      border-radius: 50px;
+      background: rgba(198, 156, 89, 0.05);
+      transition: var(--transition);
+    }
+
+    .nav-btn-back:hover {
+      background: rgba(198, 156, 89, 0.15);
+      transform: translateX(-3px);
+      border-color: var(--gold);
+    }
+
+    /* DOCUMENTO */
+    h1, h2, h3 {
+      font-family: 'Playfair Display', serif;
+      color: var(--cream);
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      line-height: 1.2;
+      margin-top: 20px;
+      margin-bottom: 30px;
+      border-bottom: 1px solid rgba(198, 156, 89, 0.2);
+      padding-bottom: 20px;
+    }
+
+    h1 span {
+      background: linear-gradient(135deg, var(--gold-light) 30%, var(--gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      margin-top: 40px;
+      border-left: 3px solid var(--gold);
+      padding-left: 15px;
+    }
+
+    h3 {
+      font-size: 1.3rem;
+      margin-top: 24px;
+      color: var(--gold-light);
+    }
+
+    p {
+      margin-bottom: 20px;
+      color: var(--text-light);
+      font-size: 1.05rem;
+      font-weight: 300;
+    }
+
+    ul, ol {
+      margin-left: 24px;
+      margin-bottom: 24px;
+    }
+
+    li {
+      margin-bottom: 8px;
+      font-weight: 300;
+    }
+
+    li strong {
+      color: var(--gold-light);
+      font-weight: 500;
+    }
+
+    /* ALERTA / CALLOUT */
+    .alert {
+      background: rgba(107, 27, 41, 0.1);
+      border: 1px solid var(--wine);
+      border-left: 4px solid var(--wine-light);
+      padding: 20px;
+      border-radius: 8px;
+      margin: 30px 0;
+    }
+
+    .alert-title {
+      font-weight: 600;
+      color: var(--wine-light);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+    }
+
+    .alert p {
+      margin-bottom: 0;
+      font-size: 0.95rem;
+      color: var(--text-light);
+    }
+
+    /* CÓDIGO Y ESTRUCTURA DE CARPETAS */
+    pre {
+      background: var(--bg-card);
+      border: 1px solid var(--border-dark);
+      padding: 20px;
+      border-radius: 12px;
+      overflow-x: auto;
+      margin: 24px 0;
+    }
+
+    code {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.9rem;
+      color: var(--gold-light);
+    }
+
+    pre code {
+      color: #cbd5e1;
+    }
+
+    .code-inline {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 0.9rem;
+      color: #e2e8f0;
+    }
+
+    /* BOTONES */
+    .btn-back-bottom {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, var(--wine) 0%, var(--wine-light) 100%);
+      color: var(--cream);
+      text-decoration: none;
+      padding: 12px 30px;
+      border-radius: 50px;
+      font-weight: 600;
+      margin-top: 40px;
+      border: 1px solid rgba(198, 156, 89, 0.25);
+      transition: var(--transition);
+    }
+
+    .btn-back-bottom:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(163, 46, 66, 0.5);
+    }
+
+    /* RESPONSIVIDAD */
+    @media (max-width: 768px) {
+      body {
+        padding-top: 90px;
+      }
+      h1 {
+        font-size: 2.2rem;
+      }
+      h2 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVEGACIÓN -->
+  <nav>
+    <div class="container nav-inner">
+      <a href="../" class="brand">
+        CPS<span>Proyectos</span>
+      </a>
+      <a href="../" class="nav-btn-back">
+        <i class="fas fa-arrow-left"></i> Volver al Showcase
+      </a>
+    </div>
+  </nav>
+
+  <!-- CONTENIDO DE LA GUÍA -->
+  <main class="container">
+    <h1>Guía de Contribución: <span>Sube tu Proyecto</span></h1>
+    
+    <p>¡Hola, Problem Solver! Esta guía detalla las especificaciones técnicas necesarias para incorporar la landing page de tu proyecto al escaparate central de <strong>CPS Proyectos</strong> (<code>cpsproyectos.com</code>).</p>
+    
+    <p>Seguir estas reglas garantiza que la plataforma se mantenga rápida, premium, segura y fácil de mantener para toda la comunidad.</p>
+
+    <!-- ESTRUCTURA DE CARPETAS -->
+    <h2>1. Estructura de Carpetas</h2>
+    <p>Cada proyecto debe alojarse en su propia subcarpeta dentro de la raíz del repositorio. El nombre de esta carpeta definirá la URL de tu landing page:</p>
+    
+    <pre><code>cpsproyectos/             &lt;-- Raíz del repositorio central
+│
+├── agro/                 &lt;-- Subcarpeta del proyecto "Agricultura Resiliente IA"
+│   └── index.html        &lt;-- Punto de entrada principal
+│
+├── tu-proyecto/          &lt;-- [NUEVO] Carpeta del proyecto (minúsculas y guiones)
+│   ├── index.html        &lt;-- [NUEVO] Punto de entrada principal (obligatorio)
+│   └── assets/           &lt;-- [OPCIONAL] CSS, JS o imágenes locales
+│       ├── style.css
+│       └── logo.png
+│
+├── index.html            &lt;-- Home central (debes añadir tu tarjeta aquí)
+└── style.css             &lt;-- Estilos de la Home central</code></pre>
+
+    <!-- ESTÁNDARES TÉCNICOS -->
+    <h2>2. Estándares Técnicos de la Landing Page</h2>
+    <p>Para que tu proyecto sea aprobado e integrado, la landing page (<code class="code-inline">index.html</code>) de tu subcarpeta debe cumplir con los siguientes requisitos:</p>
+
+    <h3>A. Autocontenido y Rutas Relativas</h3>
+    <ul>
+      <li><strong>Activos Locales:</strong> Si creas archivos CSS, JS o imágenes locales dentro de tu subcarpeta, debes enlazarlos utilizando <strong>rutas relativas</strong> (por ejemplo: <code class="code-inline">href="assets/style.css"</code> o <code class="code-inline">src="logo.png"</code>).</li>
+      <li><strong>NO usar rutas absolutas locales:</strong> Evita enlazar activos usando barras diagonales iniciales (como <code class="code-inline">/assets/style.css</code>) ya que esto romperá los enlaces cuando tu landing page se despliegue en un subdirectorio (como <code class="code-inline">cpsproyectos.com/tu-proyecto/</code>).</li>
+      <li><strong>Empaquetado recomendado:</strong> Si tu landing page es sencilla, te recomendamos incluir los estilos en un bloque <code class="code-inline">&lt;style&gt;</code> y los scripts en un bloque <code class="code-inline">&lt;script&gt;</code> dentro del mismo HTML. Esto optimiza la velocidad de carga.</li>
+    </ul>
+
+    <h3>B. Recursos Externos (CDNs y APIs)</h3>
+    <ul>
+      <li>Se fomenta el uso de librerías o tipografías externas mediante CDNs (como Google Fonts, FontAwesome, Chart.js, etc.).</li>
+      <li>Al usar enlaces externos, especifica siempre el protocolo seguro <strong><code>https://</code></strong> de forma explícita. Evita URLs sin protocolo (como <code class="code-inline">//cdnjs.cloudflare.com/...</code>) para prevenir problemas de contenido mixto en el navegador.</li>
+    </ul>
+
+    <h3>C. Diseño Premium y Responsivo</h3>
+    <ul>
+      <li>La interfaz debe ser <strong>completamente adaptativa</strong> (responsiva) y verse impecable en móviles, tablets y ordenadores portátiles o de escritorio.</li>
+      <li>Se recomienda mantener una identidad visual sofisticada y limpia. Utiliza fuentes modernas de Google Fonts (como Inter, Outfit o Playfair Display). Evita colores planos chillones y tipos predeterminados del navegador.</li>
+      <li><strong>Sin placeholders rotos:</strong> No utilices imágenes genéricas rotas o de prueba. Usa recursos de alta calidad alojados en servicios de stock libres de derechos (como Unsplash).</li>
+    </ul>
+
+    <h3>D. SEO y Metadatos Básicos</h3>
+    <p>Tu archivo <code class="code-inline">index.html</code> debe incluir en la cabecera (<code class="code-inline">&lt;head&gt;</code>) las siguientes etiquetas descriptivas:</p>
+    <pre><code>&lt;title&gt;Nombre de tu Proyecto — Eslogan descriptivo&lt;/title&gt;
+&lt;meta name="description" content="Descripción detallada de 1 o 2 líneas sobre la solución técnica que ofrece tu proyecto."&gt;</code></pre>
+
+    <!-- ALERTA IMPORTANTE -->
+    <div class="alert">
+      <div class="alert-title">
+        <i class="fas fa-exclamation-triangle"></i> Requisito de Seguridad
+      </div>
+      <p>Asegúrate de no subir credenciales, tokens de API o contraseñas de bases de datos al repositorio en texto plano. Utiliza variables de entorno o simula las respuestas en el frontend si es una demo estática.</p>
+    </div>
+
+    <!-- CÓMO AÑADIR LA TARJETA -->
+    <h2>3. Proceso para Añadir tu Tarjeta al Showcase</h2>
+    <p>Una vez que tengas la landing page de tu proyecto lista, debes dar de alta tu tarjeta en la Home del Showcase (<code class="code-inline">index.html</code> en la raíz):</p>
+    
+    <ol>
+      <li>Abre el archivo <code class="code-inline">index.html</code> de la raíz del proyecto.</li>
+      <li>Localiza la sección <code class="code-inline">&lt;div class="projects-grid"&gt;</code>.</li>
+      <li>Duplica y añade un bloque <code class="code-inline">&lt;article class="project-card"&gt;</code> como este:</li>
+    </ol>
+
+    <pre><code>&lt;article class="project-card"&gt;
+  &lt;div class="card-header-img" style="background-image: url('https://images.unsplash.com/...')"&gt;
+    &lt;span class="card-badge badge-dev"&gt;Activo&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class="card-content"&gt;
+    &lt;h3 class="card-title"&gt;Nombre de tu Proyecto&lt;/h3&gt;
+    &lt;p class="card-description"&gt;
+      Breve resumen (máximo 3 líneas) del problema real que resuelve la herramienta.
+    &lt;/p&gt;
+    &lt;div class="card-tech-stack"&gt;
+      &lt;span class="tech-tag"&gt;Python&lt;/span&gt;
+      &lt;span class="tech-tag"&gt;Geolocalización&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class="card-footer"&gt;
+      &lt;a href="tu-carpeta/" class="card-btn card-btn-primary"&gt;
+        Ver Demo &lt;i class="fas fa-arrow-right"&gt;&lt;/i&gt;
+      &lt;/a&gt;
+      &lt;a href="https://github.com/domoprac/tu-proyecto" target="_blank" class="card-btn card-btn-secondary"&gt;
+        &lt;i class="fab fa-github"&gt;&lt;/i&gt; Repositorio
+      &lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/article&gt;</code></pre>
+
+    <!-- FLUJO DE PUBLICACIÓN -->
+    <h2>4. Flujo de Publicación (GitHub)</h2>
+    <ol>
+      <li>Haz un <strong>Fork</strong> del repositorio de la comunidad: <code>github.com/domoprac/cpsproyectos</code>.</li>
+      <li>Clona tu fork localmente y crea una rama de trabajo: <code>git checkout -b feature/nombre-proyecto</code>.</li>
+      <li>Añade tu carpeta de proyecto y realiza la modificación en el <code class="code-inline">index.html</code> de la raíz.</li>
+      <li>Confirma tus cambios (<code>git commit -am "feat: añade proyecto nombre-proyecto"</code>) y súbelos a tu fork.</li>
+      <li>Abre un <strong>Pull Request (PR)</strong> desde GitHub hacia la rama <code>main</code> del repositorio original de <code>domoprac/cpsproyectos</code>.</li>
+      <li>Una vez revisado y aprobado por los administradores de la comunidad, el despliegue automático publicará tu landing en cuestión de minutos.</li>
+    </ol>
+
+    <div style="text-align: center;">
+      <a href="../" class="btn-back-bottom">
+        <i class="fas fa-home"></i> Volver al Showcase Principal
+      </a>
+    </div>
+  </main>
+
+</body>
+</html>
