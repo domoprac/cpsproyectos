@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CPS Proyectos — Escaparate Tecnológico de la Comunidad CPS</title>
-  <meta name="description" content="Plataforma showcase de proyectos tecnológicos creados por la comunidad del Máster en Problem Solving (CPS). Soluciones premium de ingeniería, software y hardware.">
+  <title>CPS Proyectos — Plataforma de Proyectos Complex Problem Solving</title>
+  <meta name="description" content="Plataforma de proyectos CPS donde se analizan de forma sistémica y se plantean soluciones a la problemática compleja. Soluciones de ingeniería y software.">
   
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,6 +27,8 @@
       </a>
       <div class="nav-links">
         <a href="#proyectos">Proyectos</a>
+        <a href="#quienes-somos">Quiénes Somos</a>
+        <a href="#contacto">Contacto</a>
       </div>
     </div>
   </nav>
@@ -36,13 +38,13 @@
     <div class="hero-glow"></div>
     <div class="container hero-content">
       <div class="hero-badge">
-        <span></span> Lanzadera de Proyectos CPS
+        <span></span> Plataforma de Proyectos CPS
       </div>
       <h1 class="hero-title">
         Ingeniería Real para <span>Problemas Complejos</span>
       </h1>
       <p class="hero-subtitle">
-        Escaparate tecnológico de la comunidad de graduados del Máster en Problem Solving (CPS). Proyectos reales de hardware, IA predictiva y automatización listos para el mercado.
+        Plataforma de proyectos CPS donde se analizan de forma sistémica y se plantean soluciones a la problemática compleja según las herramientas y skills adquiridas. Proyectos reales listos para el mercado.
       </p>
       <div class="hero-actions">
         <a href="#proyectos" class="btn btn-primary">Explorar Showcase</a>
@@ -55,7 +57,7 @@
     <div class="container">
       <div class="section-header">
         <span class="section-tag">Showcase</span>
-        <h2 class="section-title">Proyectos Activos de la Comunidad</h2>
+        <h2 class="section-title">Proyectos Tecnológicos Activos</h2>
       <!-- BARRA DE FILTROS POR CATEGORÍA -->
       <div class="filter-bar">
         <button class="filter-btn active" onclick="filterProjects('all')">Todos</button>
@@ -206,7 +208,75 @@
     </div>
   </main>
 
+  <!-- SECCIÓN QUIÉNES SOMOS -->
+  <section id="quienes-somos" class="about-section">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-content">
+          <span class="section-tag">Sobre Nosotros</span>
+          <h2 class="section-title">Quiénes Somos: CPS Proyectos</h2>
+          <p class="about-lead">
+            CPS Proyectos es una plataforma tecnológica dedicada al análisis sistémico y al desarrollo de soluciones para problemáticas complejas.
+          </p>
+          <p class="about-text">
+            Bajo el enfoque metodológico de <strong>Complex Problem Solving (CPS)</strong>, no nos limitamos a escribir código; estudiamos a fondo la viabilidad técnica, los modelos de negocio y los desafíos físicos y geográficos de cada sector. Aplicamos las herramientas y habilidades avanzadas adquiridas para transformar retos empresariales y rurales en software premium y hardware robusto listo para producción.
+          </p>
+        </div>
+        <div class="about-features">
+          <div class="feature-item">
+            <div class="feature-icon"><i class="fas fa-project-diagram"></i></div>
+            <div class="feature-info">
+              <h4>Análisis Sistémico</h4>
+              <p>Modelamos y simulamos variables complejas (clima, suelo, flujos financieros) antes de proponer cualquier desarrollo.</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon"><i class="fas fa-brain"></i></div>
+            <div class="feature-info">
+              <h4>Habilidades Avanzadas</h4>
+              <p>Integramos de forma transversal inteligencia artificial predictiva, análisis geoespacial satelital y automatización robusta en cada proyecto.</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon"><i class="fas fa-rocket"></i></div>
+            <div class="feature-info">
+              <h4>Enfoque Comercial</h4>
+              <p>Diseñamos herramientas orientadas a resolver dolores reales de clientes reales, no simples conceptos de laboratorio.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
+  <!-- SECCIÓN CONTACTO -->
+  <section id="contacto" class="contact-section">
+    <div class="container">
+      <div class="contact-box">
+        <span class="section-tag">Contacto</span>
+        <h2 class="section-title">Hablemos de su Proyecto</h2>
+        <p class="contact-subtitle">¿Tiene un desafío complejo que requiera análisis de datos, inteligencia artificial o automatización? Escríbanos directamente a <a href="mailto:contacto@cpsproyectos.com" class="contact-email">contacto@cpsproyectos.com</a> o envíenos un mensaje:</p>
+        
+        <form class="contact-form" onsubmit="event.preventDefault(); alert('¡Mensaje enviado con éxito! Nos pondremos en contacto con usted a la brevedad.'); this.reset();">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">Nombre</label>
+              <input type="text" id="name" required placeholder="Su nombre">
+            </div>
+            <div class="form-group">
+              <label for="email">Correo Electrónico</label>
+              <input type="email" id="email" required placeholder="nombre@empresa.com">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="message">Mensaje</label>
+            <textarea id="message" required rows="5" placeholder="Describa el problema o consulta..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="margin-top: 10px; width: 100%; justify-content: center;">Enviar Mensaje</button>
+        </form>
+      </div>
+    </div>
+  </section>
 
   <!-- FOOTER -->
   <footer>
@@ -216,6 +286,8 @@
       </div>
       <div class="footer-links">
         <a href="#proyectos">Proyectos</a>
+        <a href="#quienes-somos">Quiénes Somos</a>
+        <a href="#contacto">Contacto</a>
       </div>
       <div class="footer-copyright">
         &copy; 2026 CPS Proyectos. Todos los derechos reservados.
